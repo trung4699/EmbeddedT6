@@ -1,1 +1,17 @@
 Lesson 1 - Datatype and Loop
+
+Các kiểu dữ liệu như integer, float, double, char ... dùng tương ứng với các dữ liệu mình muốn xài như số 10, số 7.5, ký tự 'a', 'b', chuỗi ký tự 'Tên', ...
+Như đã học, có 3 loại máy tính là: PC, embedded, siêu máy tính
+
+Tập trung vào embedded: máy tính cỡ nhỏ, giới hạn về memory. Do đó, ta cần kiểm soát dung lượng, tối ưu dung lượng đồng thời vẫn đáp ứng tốc độ xử lý
+
+=> Datatype thường dùng: uint_8, uint_16, uint_32, uint_64
+uint_8 => kiểu dữ liệu là unsigned integer, dung lượng cấp là 8 bit = 1 byte
+
+unsigned integer: dùng số integer không âm => số cho phép cho biến nằm từ 0 => 2^n -1, với n là số bit của dung lượng
+signed integer: dùng số integer với số cho phép cho biến nằm từ - 2^(n-1) đến 2 ^ ( n-1)
+
+Các loại loop thường dùng:
+- For 
+- While
+- Do - While
