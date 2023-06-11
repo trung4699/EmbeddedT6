@@ -14,7 +14,7 @@ union Student
   double height{};
 };
 
-tuy nhiên, sự khác nhau của chúng nằm ở dung lượng bộ nhớ cấp cho các member bên trong:
+tuy nhiên, sự khác nhau của chúng nằm ở dung lượng bộ nhớ cấp cho chúng:
 - đối với struct, dung lượng của struct = tổng dung lượng của các member bên trong struct, bao gồm cả các padding
 
 struct DataType
@@ -53,3 +53,20 @@ union DataType
 };
 => dung lượng của DataType lúc này sẽ là 4 byte, ứng dụng của union là chỉ dùng 1 member tại 1 thời điểm
 địa chỉ của tất cả các member sẽ dùng chung
+
+Ứng dụng thường thấy là cách sử dụng chúng lồng vào nhau khi truyền dữ liệu giữa 2 vi điều khiển ( microcontroller)
+ví dụ:
+union Data
+{
+ struct typedef
+ {
+  uint_8t id[2];
+  uint_16t data[3];
+  uint_8t CS[1];
+  } Data;
+  Data data;
+};
+
+
+
+
