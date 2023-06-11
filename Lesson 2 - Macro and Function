@@ -1,0 +1,94 @@
+Macro - Function
+
+#define ( macro definition): để định nghĩa các macro bên trong chương trình, các macro này là các giá trị không đổi ( hằng số, string, biểu thức)
+macro không phải là biến ( variables)
+
+macro diễn ra trong quá trình tiền xử lý ( Pre - Processor)
+
+#define NAME value
+
+example:
+#define MAX 10
+
+#define SUM(a,b) a+b
+
+#define CREATE_FUNCTION( name_func, content) \
+void name_func()                             \
+{                                            \
+  printf(" %d \n", (char *)cmd);             \
+}                                            
+
+Stack ( The call stack) - Là 1 cấu trúc dữ liệu dạng LIFO ( Last In - First Out), thường được hiểu là dạng dữ liệu ngăn xếp, ví dụ:
+Xếp 1 chồng đĩa lên nhau, thì khi đó nếu ta muốn thêm 1 chiếc đĩa mới ( dữ liệu mới, biến, function, địa chỉ function, ...) vào chồng đĩa này, thì ta phải đặt chiếc đĩa đó lên trên cùng của chồng đĩa ( Last In)
+Và khi ta muốn lấy chiếc đĩa xuống ( function exit, xóa dữ liệu, ... ) thì ta sẽ lấy chiếc đĩa trên cùng đó xuống dần theo thứ tự.
+
+Program counter - Là 1 thanh ghi dùng để lưu địa chỉ của tất cả các lệnh (instruction) sẽ được thực thi theo trình tự của người lập trình
+Stack pointer - Là con trỏ stack trỏ trên đầu stack, lưu địa chỉ của item gần nhất đặt trên stack
+
+Ví dụ:
+
+void print() // địa chỉ là 0xC1 - 0xC7
+{
+  printf(" Hello");
+}
+
+int main()
+{
+  A(); // ví dụ A, B, C là function được khai báo trong main với cấu trúc máy tính là 32 bit = 4 byte, địa chỉ của chúng lần lượt là 0x01, 0x05, 0x09
+  B();
+  C();
+  
+  print(); // là function đã được khai báo trước
+  D();
+}
+
+Sau khi lập trình xong, ta sẽ biên dịch đoạn chương trình thông qua compiler và các bước khác để biên dịch thành ngôn ngữ máy tính ( 100101010111011010)
+
+Sau biên dịch, program counter sẽ lưu địa chỉ của tất cả các lệnh bên trong main() 
+
+Chương trình main() sẽ được chạy trên 1 vùng bộ nhớ riêng với cấu trúc dữ liệu stack
+
+Khi chương trình bắt đầu chạy, vi xử lý sẽ tiến hành đọc địa chỉ đã lưu trên program counter để thực thi từng lệnh đã lập trình theo thứ tự, đối với ví dụ trên, bên trong program counter sẽ lưu như sau:
+Program counter:
+0x01 0x02 0x03 0x04
+0x05 0x06 0x07 0x08
+0x09 0x0A 0x0B 0x0C
+0xC1 0xC2 0xC3 0xC4
+0xC5 0xC6 0xC7 0xC8 ( ở đây có 0xC8 vì cấu trúc máy tính giả sử là 32 bit, do đó function print() sẽ chiếm 8 ô nhớ, ô 0xC8 gọi là padding)
+0x0D 0x0E 0x0F 0x10 ( vì D() được khai báo trong main, do đó địa chỉ của D() sẽ là địa chỉ tiếp theo ngay sau C())
+
+Còn stack pointer dùng để theo dõi từng địa chỉ của vùng nhớ chạy chương trình main() (stack)
+Ứng dụng khi sử dụng đệ quy:
+int dequy() ( 0xC1 - 0xC4)
+{
+  if ( i < 2)
+    return dequy(i+1);
+  return 2;
+}
+
+int main()
+{
+  A(); // A() là 1 function nào đó cần 4 byte dung lượng để lưu và chạy
+  dequy(0); // main sẽ gọi dequy() 3 lần ( dequy(0), dequy(1), dequy(2))
+  B(); // B() là 1 function nào đó cần 4 byte dung lượng để lưu và chạy)
+  return 0;
+}
+
+Với ví dụ này, program counter sẽ lưu như sau:
+
+0x01 0x02 0x03 0x04 // function A()
+0xC1 0xC2 0xC3 0xC4 // dequy(0)
+0x05 0x06 0x07 0x08 // dequy(1)
+0x09 0x0A 0x0B 0x0C // dequy(2)
+0x05 0x06 0x07 0x08 // function B()
+
+vì dequy() có địa chỉ 0xC1 - 0xC4, nên ở lần gọi đầu tiên máy tính thực hiện chạy hàm dequy() với địa chỉ đã cho trước đó
+nhưng ở lần thứ 2 và 3, vì đây là đệ quy, tức là chạy function dựa trên dữ liệu function trước đó
+do đó, máy tính sẽ dùng bộ nhớ ở chương trình main() ( stack) để ghi function dequy() vào ô địa chỉ tương ứng và sử dụng chúng
+sau khi sử dụng xong, lúc này stack pointer trỏ ở địa chỉ 0x0C sẽ quay về trỏ ở địa chỉ 0x05, function dequy() đã lưu ở địa chỉ 0x05-0x0C vẫn lưu ở đó và chưa được giải phóng ( deallocated)
+tiếp đó, khi tới B(), máy tính sẽ ghi đè (overwrite) B() lên dequy() đã lưu ở địa chỉ 0x05-0x08
+
+Ngoài lề: khi sử dụng đệ quy cần lưu ý:
+1. dung lượng chương trình main ( stack)
+2. dung lượng cần thiết để chạy đệ quy
+Vì sử dụng đệ quy sẽ sử dụng dung lượng của chương trình main ( stack) để lưu trữ các function đệ quy, nếu dung lượng chạy đệ quy vượt ngưỡng dung lượng bộ nhớ chương trình main() => stack overflow
