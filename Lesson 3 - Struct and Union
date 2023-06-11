@@ -1,2 +1,55 @@
-Struct 
-Union
+struct và union đều dùng để khai báo 1 cấu trúc các biến mà ta mong muốn sử dụng, ví dụ:
+
+struct Student
+{
+  char[20] name{};
+  int age{};
+  double height{};
+};
+
+union Student
+{
+  char[20] name{};
+  int age{};
+  double height{};
+};
+
+tuy nhiên, sự khác nhau của chúng nằm ở dung lượng bộ nhớ cấp cho các member bên trong:
+- đối với struct, dung lượng của struct = tổng dung lượng của các member bên trong struct, bao gồm cả các padding
+
+struct DataType
+{
+  int int;
+  double double;
+  char char;
+};
+với ví dụ trên, giả sử kiến trúc máy tính là 32 bit = 4 byte, dung lượng của int, double, char lần lượt là 2 byte, 4 byte, 1 byte.
+Vì kiến trúc máy tính là 4 byte ( | 1 | 1 | 1 | 1 | ), đo đó, dung lượng của DataType sẽ là 4 + 4 + 4 = 12, vì int sẽ tốn 2 byte padding và char sẽ tốn 3 byte padding với cách sắp xếp như trên
+| i | i | 0 | 0 | 
+| d | d | d | d | 
+| c | 0 | 0 | 0 | 
+
+Do đó, để tránh việc lãng phí bộ nhớ ( 5 byte như vd trên), khi sử dụng struct cần lưu ý cách sắp xếp các biến dựa trên kiến trúc máy tính
+struct DataType
+{
+  int int;
+  char char;
+  double double;  
+};
+
+| i | i | c | 0 | 
+| d | d | d | d | 
+=> dung lượng của DataType lúc này là 8 byte, 1 byte padding
+địa chỉ của từng member sẽ được phân vùng tương ứng
+
+
+- Đối với union, dung lượng của union = dung lượng của member có dung lượng cao nhất
+
+union DataType
+{
+  int int;
+  char char;
+  double double;  
+};
+=> dung lượng của DataType lúc này sẽ là 4 byte, ứng dụng của union là chỉ dùng 1 member tại 1 thời điểm
+địa chỉ của tất cả các member sẽ dùng chung
