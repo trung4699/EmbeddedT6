@@ -1,2 +1,37 @@
 Understand process convert from program to a file for computer to understand and run
 
+Khi lập trình 1 chương trình, 1 chương trình sẽ bao gồm 1 file main và các thư viện mà trong main sẽ sử dụng
+
+Ngôn ngữ C là ngôn ngữ bậc trung ( middle level) mà lập trình viên sử dụng để thiết kế 1 cấu trúc các câu lệnh ( instruction) để máy tính thực hiện
+
+Máy tính chỉ có thể hiểu ngôn ngữ máy tính ( 010101010101010110 - binary), việc con người sử dụng ngôn ngữ máy tính để giao tiếp với máy tính là rất rất khó, do đó hợp ngữ ra đời ( assembly language)
+
+Hợp ngữ ( Assembly language) là 1 ngôn ngữ thường dùng để mô tả phần cứng của máy tính, giúp con người dễ sử dụng để giao tiếp với máy tính hơn so với ngôn ngữ máy tính.
+Sau khi lập trình bằng assembly, ta cần 1 trình biên dịch để biên dịch hợp ngữ sang ngôn ngữ máy tính để máy tính có thể hiểu, đó chính là assembler.
+Tuy nhiên, hợp ngữ vẫn còn tương đối " khó" để tiếp cận với con người 1 cách đại chúng, do đó các ngôn ngữ khác ra đời như C, C++, Java, Python, ... giúp con người tiếp cận dễ dàng hơn
+và cùng với đó là các trình biên dịch tương ứng ( compiler). Và trình biên dịch sẽ biên dịch ngôn ngữ từ C, java, python, ... sang hợp ngữ, và từ hợp ngữ sẽ được biên dịch thành ngôn ngữ máy tính. 
+Ngày nay các trình biên dịch compiler thường tích hợp cả assembler, do đó ta mới có thể chạy được chương trình khi ta lập trình bằng ngôn ngữ C, java, python, ...
+
+Khi ta lập trình 1 chương trình sử dụng ngôn ngữ C,
+Giả sử chương trình của ta bao gồm 1 file main.c và 1 file include bên trong c ví dụ như calculate.h
+
+Để máy tính có thể hiểu được ta muốn ra lệnh cho nó thực hiện những gì, thì chương trình của ta phải trải qua các bước sau:
+
+B1: Tiền xử lý ( Pre - Processor)
+- Bước này sẽ tiến hành gom tất cả các file gồm file main và các file ( or thư viện) khác mà main sẽ sử dụng thành chung 1 file mới, file này sẽ có định dạng là main.i
+- các lệnh không liên quan đến chương trình sẽ loại bỏ ( comment, ...)
+- Mục đích của comment là để sau này, khi chúng ta muốn phát triển thêm cho chương trình mà ta đã lập trình, ta cần phải đọc lại chương trình mà ta đã lập trình, 
+việc sử dụng comment sẽ giúp ta dễ dàng đọc hiểu chương trình cũng như người khác ( readable )
+- Vì sẽ gộp thành 1 file, do đó khi lập trình, nếu không cần thiết thì tuyệt đối không sử dụng biến global, hoặc nếu sử dụng cần chú ý cách đặt tên biến để tránh xung đột tên biến ở các file khác nhau
+ví dụ: có thể thêm tiền tố cho tên biến: g_i, g_number, g_variables, ...
+
+B2: Compiler
+- Sau khi đã có file main.i, thông qua trình biên dịch compiler sẽ biên dịch file main.i thành hợp ngữ, file này sẽ có định dạng là main.s - assembly language
+
+B3: Assembler
+- Sau khi đã có file main.s, thông qua trình biên dịch assembler sẽ biên dịch file main.s thành:
++ Object files ( main.o)
++ Libraries ( các thư viện)
+
+B4: Linker
+- Cuối cùng, thông qua Linker sẽ tạo ra file main.exe (như 1 file nén): executable, và máy tính sẽ hiểu và chạy được chương trình với định dạng .exe
