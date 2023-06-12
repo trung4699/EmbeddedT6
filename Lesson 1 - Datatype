@@ -27,4 +27,6 @@ Các loại loop thường dùng:
   Các câu lệnh
  } While ( true); 
  
+ Hạn chế sử dụng vòng lặp lồng nhau ( nested loop) vì yếu tố efficiency của thuật toán ( Big O notation)
+ 
  
