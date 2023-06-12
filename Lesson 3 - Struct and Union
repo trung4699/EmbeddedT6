@@ -67,6 +67,9 @@ union Data
   Data data;
 };
 
+Tại 1 thời điểm, ta chỉ thực hiện được 1 loại hành động: hoặc là truyền dữ liệu, hoặc là nhận dữ liệu => việc sử dụng union lúc này sẽ giúp tối ưu dung lượng cần thiết 
+Đối với struct để khai báo cấu trúc dữ liệu ta muốn truyền => tổng dung lượng dữ liệu ta sẽ truyền
+
 
 
 
