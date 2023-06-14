@@ -59,4 +59,9 @@ Nếu ta pass by address, thì ta sẽ chỉ dùng 1 pointer có kiểu dữ li�
 và dung lượng của pointer chiếm trong bộ nhớ stack chỉ vỏn vẹn = kiến trúc máy tính ( ví dụ 32 bit thì dung lượng pointer là 4 byte).
 
 pointer to function
+
+Pointer to Pointer:
+Về cơ bản, 1 Pointer khi được khai báo để sử dụng đều có 1 địa chỉ và 1 giá trị, địa chỉ là địa chỉ của chính nó, còn giá trị là địa chỉ của đối tượng mà nó trỏ tới.
+Pointer to Pointer chỉ đơn giản là dùng 1 con trỏ để trỏ tới 1 con trỏ khác.
+Mục đích: 
  
