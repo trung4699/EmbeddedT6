@@ -28,3 +28,35 @@
   size of pointer = cấu trúc máy tính;
   ví dụ máy tính có cấu trúc là 32 bit => sizeof(pointer) = 4 byte; tương đương 32 bit
   
+  NULL pointer:
+  null pointer là gì ?
+  null pointer là 1 loại pointer không có kiểu dữ liệu cũng như không trỏ tới 1 địa chỉ của 1 đối tượng nào cả.
+  Mục đích của null pointer có 2:
+  1. Khởi tạo 1 con trỏ nhưng chưa gán địa chỉ của 1 đối tượng nào đó cho con trỏ.
+  2. Dùng để xác định con trỏ có "null" hay không.
+  Tại sao lại phải xác định con trỏ có " null" hay không.
+  Đầu tiên, ta phải hiểu rõ về phân vùng bộ nhớ, ở đây ta đề cập tới bộ nhớ tĩnh ( static allocated memory ) và bộ nhớ động ( dynamic allocated memory).
+  Đối với các biến được khởi tạo trên bộ nhớ tĩnh, chúng sẽ luôn tồn tại cho đến khi chương trình kết thúc, do đó việc pointer trỏ tới chúng không phải là vấn đề.
+  Nhưng, đối với các biến được khởi tạo trên bộ nhớ động, ta luôn nhớ rằng sau khi sử dụng biến hoặc dữ liệu trên bộ nhớ động xong, ta cần phải giải phóng chúng ( deallocated) để tránh tình trạng leak memory.
+  Trong trường hợp nếu như pointer trỏ vào 1 đối tượng trên bộ nhớ động, và sau đó đối tượng đó đã được giải phóng, thì pointer này sẽ trở thành dangling pointer, vì đối tượng mà nó trỏ tới đã bị mất cả địa chỉ lẫn giá trị.
+  Nếu ta cố đọc dữ liệu của dangling pointer ( *ptr) thì sẽ dẫn đến undefined behavior.
+  Do đó, trước khi đọc dữ liệu của 1 pointer bất kỳ, ta cần phải xác định xem pointer đó có đang "dangling" hay không. 
+  Nhưng, máy tính lại không thể kiểm tra được pointer "dangling" hay không mà máy tính có thể kiểm tra được pointer có đang "null" hay không.
+  Do đó, sau khi sử dụng pointer bất kỳ xong, ta đều phải gán pointer cho null vì ta đang không xài chúng nữa
+  Đồng thời, trước khi đọc dữ liệu của 1 pointer bất kỳ, ta cần phải xác định xem pointer có null hay không, vì nếu cố đọc dữ liệu của null pointer cũng sẽ dẫn đến undefined behavior.
+  
+  
+ Khi sử dụng các function, bên cạnh việc pass by value( đối với các kiểu dữ liệu có dung lượng nhỏ như int, double), ta còn có thể pass by reference ( in C++) or pass by address ( pointer).
+ Việc sử dụng pass by reference/address khi dung lượng của đối tượng được trỏ tới lớn ( ví dụ như sring - 1 mảng char, 1 mảng dữ liệu nào đó, ...), việc pass by value sẽ copy đối tượng đó để cho hàm sử dụng
+ => nhưng bộ nhớ stack cho hàm main có dung lượng khá nhỏ, do đó pass by value các đối tượng dung lượng lớn sẽ không tối ưu bộ nhớ stack.
+ 
+ còn pass by reference/address chỉ đơn giản là nhìn vào đối tượng đã sẵn có, lấy giá trị của chúng để sử dụng, chứ không copy chúng và tạo ra trên bộ nhớ stack.
+ 
+Như vậy, ta có thể nắm đại khái ứng dụng của pointer là:
+Ví dụ ta có 1 data rất lớn như là int arr[100000] nằm ở bộ nhớ động, bên trong chương trình main chỉ sử dụng 1 lệnh đơn giản là đọc arr[] rồi in ra màn hình.
+Nếu ta pass by value, thì ta sẽ tạo copy 1 int arr[100000] trên bộ nhớ stack của chương trình main => lãng phí bộ nhớ stack
+Nếu ta pass by address, thì ta sẽ chỉ dùng 1 pointer có kiểu dữ liệu int, và ta đọc giá trị của địa chỉ mà pointer đang trỏ tới, việc ta làm chỉ đơn giản là tăng địa chỉ pointer đang trỏ lên 1 ứng với mỗi giá trị trong arr[100000]
+và dung lượng của pointer chiếm trong bộ nhớ stack chỉ vỏn vẹn = kiến trúc máy tính ( ví dụ 32 bit thì dung lượng pointer là 4 byte).
+
+pointer to function
+ 
