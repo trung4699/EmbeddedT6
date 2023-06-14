@@ -1,0 +1,30 @@
+  Pointer 
+  
+  Khi khai báo 1 biến bất kỳ ( hoặc function, mảng, ....), máy tính sẽ cấp 1 địa chỉ để lưu biến, và giá trị của biến tại địa chỉ đó
+  ví dụ:
+  int a = 5;
+  giả sử máy tính lưu địa chỉ của a tại địa chỉ 0x01
+  => biến a có địa chỉ 0x01, giá trị của địa chỉ là 5
+  
+  Pointer là 1 loại biến dùng để lưu địa chỉ trong máy tính
+  cách khai báo pointer có kiểu integer:
+  int* ptr = &a;
+  trong đó
+  cách khai báo 1 biến là pointer thì thêm * vào phía sau kiểu dữ liệu ( asterisk)
+  còn dấu & để xác định địa chỉ của 1 biến ( or đối tượng bất kỳ) ( address-of)
+  
+  Tuy nhiên, pointer chỉ là 1 biến dùng để lưu địa chỉ của 1 biến khác, nhưng chỉ lưu địa chỉ mà thôi, còn làm sao để xác định kiểu dữ liệu tại ô địa chỉ đó là kiểu gì, thì nằm ở chúng ta
+  do đó, void pointer sẽ đáp ứng đúng với yêu cầu này => lưu địa chỉ của 1 đối tượng bất kỳ với kiểu dữ liệu bất kỳ.
+  cách khai báo void pointer:
+  void* ptr = &a;
+  
+ Tuy nhiên, để có thể sử dụng giá trị của địa chỉ đó, ta cần phải xác định được kiểu dữ liệu của giá trị tại địa chỉ đó cho pointer thì ta mới có thể xác định được giá trị tại địa chỉ đó.
+ Lý do: bên trong cấu trúc máy tính, ví dụ như kiểu integer cho cấu trúc máy tính là 32 bit
+ thì integer sẽ là 2 byte = 16 bit
+ 16 bit tức là 1 biến có kiểu dữ liệu integer có giá trị ( ví dụ giá trị là 1) bên trong ngôn ngữ máy tính sẽ được biểu diễn: 0000000000000001 ( giả sử địa chỉ này trong máy tính là 0x01)
+ Nếu kiểu dữ liệu của pointer là double => 4 byte, thì tại địa chỉ 0x01 này, sẽ không đủ 32 bit để biểu thị => error
+ Kể cả 2 kiểu dữ liệu khác nhau, có cùng 1 dung lượng ( ví dụ như integer và char[2]) thì việc xác định kiểu dữ liệu của nó sẽ quyết định cách máy tính hiểu nó, nếu hiểu sai => error
+  
+  size of pointer = cấu trúc máy tính;
+  ví dụ máy tính có cấu trúc là 32 bit => sizeof(pointer) = 4 byte; tương đương 32 bit
+  
