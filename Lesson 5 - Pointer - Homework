@@ -1,0 +1,75 @@
+#include <stdio.h>
+
+int sum(int a, int b)
+{
+    printf("Sum of %d and %d is:\n",a,b);
+    return a+b;
+}
+
+int subtract(int a, int b)
+{
+    printf("Subtract of %d by %d is: \n",a,b);
+    return a-b;
+}
+
+int multiple(int a, int b)
+{
+    printf("Multiple of %d and %d la: \n",a,b);
+    return a*b;
+}
+
+float divide(int a, int b)
+{
+    printf("%d divided by %d is: \n",a,b);
+    return a/b;
+}
+
+void calculator(void (*ptr)(int a, int b), int a, int b)
+{
+    printf("Program calculate\n");
+    ptr(a,b);
+}
+
+int main()
+{
+    void* ptr;
+    double a = 10.3;
+    char str[] = "Hello";
+
+    void* arr[] = {&calculator, &a , &str};
+  
+   ptr = &str;
+   printf("Gia tri double : %f\n", *(double*)arr[1]);
+   printf("Gia tri str : ");
+   //ở đây, tuy tên btvn là ép kiểu dữ liệu, nhưng trọng điểm là nằm ở pointer
+   // bản chất của pointer là địa chỉ
+   // do đó, nếu xem xét tới vấn đề địa chỉ, sự khác biệt của 3 địa chỉ trong pointer arr là số lượng địa chỉ của chúng
+
+   // biến a chỉ gồm 1 địa chỉ của a và giá trị của a là 10.3
+
+   // biến str bản chất là 1 mảng có kiểu dữ liệu là char với 5 thành phần, và địa chỉ của 5 thành phần này sẽ liền kề nhau
+   // và khi ta dùng con trỏ lấy địa chỉ của str, con trỏ sẽ mặc định trỏ tới địa chỉ của thành phần đầu tiên của mảng str
+   // do đó, để đọc được giá trị của mảng, ta cần đọc giá trị của con trỏ ở thành phần đầu tiên, sau đó tăng giá trị của con trỏ lên 1
+   // tăng giá trị con trỏ lên 1 = tăng địa chỉ lên 1, và 5 thành phần nằm liền kề nhau = địa chỉ của chúng liền kề nhau
+
+   // đối với đối tượng calculator, bản chất nó là 1 function, và để function này hoạt động cần 3 yếu tố
+   // 1 là pointer loại void có dạng (int, int) truyền vào
+   // 2,3 lần lượt là 2 biến kiểu dữ liệu int
+   // nên đối với calculator, ta cần truyền vào yếu tố 1 1 pointer, và pointer này sẽ trỏ tới 1 trong 4 hàm bất kỳ trên là được
+
+   for (int i = 0; i < sizeof(str)-1; i++)
+   {
+    /* code */
+    printf("%c",*(char*)ptr);
+    ptr++;
+   }
+   printf("\n");
+    // em vẫn đang tiếp tục suy nghĩ để đọc được calculator, nếu không có sự thay đổi trong file tức là em nghĩ chưa ra nha a 
+   /*calculator(&sum,7,8);
+   
+   printf("Gia tri calculator: %d\n", *(int*)arr[0]);*/
+
+   
+
+    return 0;
+}
