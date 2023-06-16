@@ -72,3 +72,66 @@ khi run code, màn hình của ta sẽ được in như sau:
 Function count() da duoc thuc thi 1 lan
 Function count() da duoc thuc thi 2 lan
 Function count() da duoc thuc thi 3 lan
+Kết thúc ví dụ với biến static local.
+
+Đối với biến global static, để hiểu được lý do vì sao, ta cần biết về quá trình tiến xử lý.
+Nhắc lại bài cũ, trước khi thực hiện biên dịch sang hợp ngữ ( compiler code in C language to Assembly language), compiler sẽ thực hiện quá trình tiền xử lý trước.
+Mục tiêu của quá trình tiền xử lý là sẽ gom hết tất cả các file mà chương trình của ta sẽ sử dụng vào chung 1 file.
+Và nếu như cái file này dùng biến global, và biến global có chung tên biến, ví dụ như (int i;) chẳng hạn
+=> xung đột đặt tên biến
+để tránh việc xung đột đặt tên biến, biến static global ra đời.
+ví dụ ta có 2 file main.c và clone.c
+trong main.c, ta khai báo biến static global i: static int i; 
+trong clone.c, ta khai bao biến static global i: static int i;
+nếu ta compile chúng, khi thực hiện quá trình tiền xử lý, sẽ không xảy ra xung đột tên biến.
+
+Bss:
+- Quyền truy cập: read/write
+- Chứa biến global và biến static chưa khởi tạo hoặc khởi tạo với giá trị = 0;
+- Chỉ giải phóng bộ nhớ khi chương trình kết thúc.
+
+Stack
+- Quyền truy cập: read/write
+- Được sử dụng để cấp phát bộ nhớ cho biến local, input parameter của function, ...
+- Bộ nhớ được giải phóng sau khi ra khỏi block code/ function.
+
+Heap
+- Quyền truy cập: read/write
+- Được sử dụng để cấp phát bộ nhớ động như malloc(), calloc(),...
+- Sẽ được giải phóng khi gọi hàm free
+
+So sánh Stack và Heap:
+- Giống nhau: cả 2 đều là vùng nhớ được tạo ra và lưu trữ trong RAM khi chương trình được thực thi.
+Bộ nhớ Stack dùng để lưu các biến local bên trong các function, input parameter,... Truy cập vào bộ nhớ này rất nhanh và được thực thi khi chương trình được biên dịch ( compiler time).
+Bộ nhớ Heap được dùng để lưu trữ vùng nhớ cho những biến con trỏ được cấp phát động bởi các hàm malloc() - calloc() - realloc() ( trong C)
+
+Kích thước vùng nhớ:
+Stack: kích thước bộ nhớ của Stack là cố định, tùy thuộc vào từng hệ điều hành, ví dụ với hệ điều hành window là 1MB, Linux là 8MB ( tùy thuộc vào kiến trúc hệ điều hành).
+Heap: kích thước bộ nhớ của Heap là không cố định, có thể tăng giảm => đáp ứng được như cầu lưu trữ dữ liệu của chương trình.
+
+Đặc điểm:
+Stack: được quản lý bởi hệ điều hành. Dữ liệu lưu trong Stack sẽ được hệ điều hành giải phóng sau khi thực hiện xong function
+Heap: được quản lý bởi lập trình viên. Dữ liệu trong Heap sẽ không tự động giải phóng khi function thực hiện xong, mà ta cần phải giải phóng vùng nhớ thủ công bằng cách 
+dùng lệnh free đối với C
+dùng lệnh delete/ delete[] đối với C++
+hoặc khi chương trình kết thúc sẽ được giải phóng
+Nếu không giải phóng sẽ xuất hiện tình trạng rõ rỉ dữ liẹu ( memory leak).
+
+Và việc giải phóng dữ liệu tự đự động sẽ tùy thuộc vào trình biên dịch trung gian( compiler)
+
+Các lỗi xảy ra với bộ nhớ cần phải lưu ý khi sử dụng:
+Stack: nếu chương trình sử dụng quá nhiều bộ nhớ vượt quá khả năng lưu trữ sẽ dẫn đến tình trạng tràn bộ nhớ ( stack overflow).
+Các trường hợp xảy ra như sử dụng quá nhiều biến local, đệ quy function vô hạn, ...
+ví dụ đệ quy vô hạn:
+int print(int i)
+{
+  printf("Vi du de quy khong gioi han %d",i);
+  return print(i+1);
+}
+
+
+Heap: Liên tục cấp phát bộ nhớ động mà không giải phóng thì sẽ dẫn đến tình trạng tràn bộ nhớ Heap ( Heap overflow).
+Nếu khởi tạo một vùng nhớ mà Heap không thể lưu trữ một lần được sẽ bị lỗi khởi tạo vùng nhớ Heap thất bại.
+ví dụ: int *A = (int*)malloc(16498984156149874979416149494);
+
+
