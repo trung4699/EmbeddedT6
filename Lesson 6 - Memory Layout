@@ -129,9 +129,17 @@ int print(int i)
   return print(i+1);
 }
 
-
 Heap: Liên tục cấp phát bộ nhớ động mà không giải phóng thì sẽ dẫn đến tình trạng tràn bộ nhớ Heap ( Heap overflow).
 Nếu khởi tạo một vùng nhớ mà Heap không thể lưu trữ một lần được sẽ bị lỗi khởi tạo vùng nhớ Heap thất bại.
 ví dụ: int *A = (int*)malloc(16498984156149874979416149494);
 
+Cấp phát bộ nhớ động trong C:
+int* A = (int*) malloc(100);
+=> cấp cho pointer A dung lượng 100 byte
+
+int* B = (int*) calloc(100,2);
+=> cấp cho pointer B 100 phần tử, mỗi phần tử có kích thước là 2 byte
+
+A = (int*) realloc (A, 200);
+=> thay đổi dung lượng của pointer A thành 200 byte
 
