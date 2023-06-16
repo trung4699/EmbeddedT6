@@ -1,0 +1,74 @@
+Bộ nhớ được chia thành 5 phân vùng khác nhau để lưu trữ các loại dữ liệu khác nhau cũng như là thực hiện các function khác nhau:
+Stack
+Heap
+Bss
+Data segment
+Text segment
+
+Text segment:
+- Quyền truy cập: read
+- chứa lệnh để thực thi nên tránh sửa đổi instruction
+- chứa khai báo hằng số trong chương trình: ví dụ như constant double pi = 3.14; biến pi sẽ được lưu ở phân vùng text segment
+
+Data segment ( initialized data):
+- Quyền truy cập: read/write
+- Chứa biến global và biến static với giá trị khởi tạo khác 0
+- Chỉ giải phóng bộ nhớ khi chương trình kết thúc
+
+biến global là biến được khai báo nhưng không nằm trong function nào cả,
+biến static global
+biến static local
+
+Tại sao lại có biến static ?
+Đầu tiên, ta phải biết biến global và local khác nhau thế nào ?
+Biến global thì ta sẽ khai báo ở chương trình.
+Biến local thì ta khai báo ở bên trong các function.
+
+Sự khác nhau giữa vị trí khai báo này nằm ở chỗ vòng đời của chúng:
+Đối với biến local bên trong các function, khi chương trình main của ta gọi function để thực thi, ( thực thi trên bộ nhớ stack)
+sau khi thực thi thì các biến local đã được khởi tạo trên bộ nhớ stack sẽ được giải phóng => vòng đời biến local = vòng đời của function
+
+ta có ví dụ như sau
+void count()
+{
+  int count = 1;
+  printf("Function count() da duoc thuc thi %d lan\n", count);
+  count++;
+}
+
+int main()
+{
+  count();
+  count();
+  count();
+  return 0;
+}
+
+với ví dụ trên, ta muốn function count() mỗi lần được gọi sẽ in ra nó đã được gọi bao nhiêu lần. Bên trong function count() ta khởi tạo biến đếm count và sau mỗi lần gọi thì biến đếm count sẽ tăng lên 1.
+Lúc này, với cách khởi tạo biến count như trên, count sẽ có vòng đời = vòng đời của function, và sau khi function thực thi trên stack xong sẽ được giải phóng => không lưu giá trị của biến count
+khi run code, trên màn hình của ta sẽ in như sau:
+Function count() da duoc thuc thi 1 lan
+Function count() da duoc thuc thi 1 lan
+Function count() da duoc thuc thi 1 lan
+
+Do đó, biến static local ra đời với mục đích sau khi khởi tạo thì sẽ không giải phóng khi function thực hiện xong.
+
+void count()
+{
+  static int count = 1;
+  printf("Function count() da duoc thuc thi %d lan\n", count);
+  count++;
+}
+
+int main()
+{
+  count();
+  count();
+  count();
+  return 0;
+}
+
+khi run code, màn hình của ta sẽ được in như sau:
+Function count() da duoc thuc thi 1 lan
+Function count() da duoc thuc thi 2 lan
+Function count() da duoc thuc thi 3 lan
