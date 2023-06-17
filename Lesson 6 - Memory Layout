@@ -5,6 +5,10 @@ Bss
 Data segment
 Text segment
 
+Quyền truy cập:
+- Read: Đọc dữ liệu, sử dụng dữ liệu với các mục đích khác nhau
+- Write: Thay đổi ( ghi đè) dữ liệu
+
 Text segment:
 - Quyền truy cập: read
 - chứa lệnh để thực thi nên tránh sửa đổi instruction
