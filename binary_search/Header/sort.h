@@ -2,9 +2,9 @@
 #define SORT
 
 /*
-* File: binary_search.c
+* File: sort.h
 * Author: Phan Hoang Trung
-* Date: 28/06/2023
+* Date: 03/07/2023
 * Description: This is a file for searching a number in an array using method binary search
 */
 
