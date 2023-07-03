@@ -2,9 +2,9 @@
 #define CREATE_ARRAY
 
 /*
-* File: binary_search.c
+* File: create_aray.h
 * Author: Phan Hoang Trung
-* Date: 28/06/2023
+* Date: 03/07/2023
 * Description: This is a file include everything in preprocessor for create_array.c
 */
 
