@@ -7,12 +7,27 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\linked_list\Header\operation.h"
 
+void printEmpty(bool check)
+{
+    if (check)
+    {
+        printf("Our list is empty\n");
+    }
+    else
+    {
+        printf("Our list is not empty\n");
+    }
+}
 
 int main()
 {
     node *array = NULL;
+
+    printEmpty(empty(&array));
     
     push_back(&array,7);
     
@@ -78,6 +93,8 @@ int main()
         printf("%d ",get(&array,i));
     }
     printf("\n");
+
+    printEmpty(empty(&array));
 
     free(array);
 

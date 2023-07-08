@@ -9,6 +9,7 @@
 */
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 typedef struct node
 {
     int value;
@@ -26,6 +27,7 @@ void insert(node **array, int value, int pos);
 void deletee(node **array, int pos);
 int size(node **array);
 int get(node **array, int pos);
+bool empty(node **array);
 
 
 #endif

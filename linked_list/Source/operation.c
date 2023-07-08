@@ -294,3 +294,24 @@ int get(node **array, int pos)
     return value;
 }
 
+/*
+* Function: empty
+* Description: check whether our list is empty or not
+* Input:
+*   array - pointer to pointer has datatype is node -  address of pointer array which point to first node of linkedlist
+* Output:
+*   true if our list is empty
+*   false if our list is not empty 
+*/
+bool empty(node **array)
+{
+    if (*array == NULL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    } 
+    
+}
