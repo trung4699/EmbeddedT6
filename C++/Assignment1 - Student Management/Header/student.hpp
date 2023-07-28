@@ -1,3 +1,13 @@
+#ifndef STUDENT_H
+#define STUDENT_H
+
+/*
+* File: student.hpp
+* Author: Phan Hoang Trung
+* Date: 28/07/2023
+* Description: This is a file include everything in preprocessor for student.cpp and main.cpp
+*/
+
 #include <iostream>
 #include <string>
 #include <list>
@@ -51,3 +61,5 @@ public:
     void print(std::list <Student> &database);
 
 };
+
+#endif

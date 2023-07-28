@@ -1,10 +1,29 @@
-
+/*
+* File: student.cpp
+* Author: Phan Hoang Trung
+* Date: 28/07/2023
+* Description: This is a main file for program student management assignment
+* Haven't done sort requirement
+*/
 
 
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\student.hpp"
 
 #include <algorithm>
 
+/*
+* Function: Student()
+* Description: This is a conductor of Student class
+* Input:
+*   name - string - student name 
+*   age - integer - student age
+*   gender - TypeGender - student gender
+*   math - double - student math score
+*   physic - double - student physic score
+*   chemical - double - student chemical score
+* Output:
+*   
+*/
 Student::Student(std::string name = "Trung", int age = 24, TypeGender gender = Male, double math = 0, double physic = 0, double chemical = 0)
 {
     
@@ -21,11 +40,24 @@ Student::Student(std::string name = "Trung", int age = 24, TypeGender gender = M
     id++;
 }
 
+
+/*
+* Function: getID
+* Description: This function will print ID of student
+* Input:
+* Output:
+*/
 void Student::getID()
 {
     std::cout << "ID: " << ID << '\n';
 }
 
+/*
+* Function: getInfo
+* Description: This function will print info of student: name, age, gender
+* Input:
+* Output:
+*/
 void Student::getInfo()
 {
     std::cout << "This is Student " << Name << '\n';
@@ -43,6 +75,14 @@ void Student::getInfo()
     }
 }
 
+
+
+/*
+* Function: getScore
+* Description: This function will print student score: math, physic, chemical and overall
+* Input:
+* Output:
+*/
 void Student::getScore()
 {
     std::cout << "Student " << Name << " has scores: " << '\n';
@@ -53,21 +93,52 @@ void Student::getScore()
     std::cout << '\n';
 }
 
+/*
+* Function: readID
+* Description: This function will return ID of student
+* Input:
+* Output:
+*   ID - integer - student ID
+*/
 int Student::readID()
 {
     return ID;
 }
 
+
+/*
+* Function: readName
+* Description: This function will return student name
+* Input:
+* Output:
+*   Name - string - student name
+*/
 std::string Student::readName()
 {
     return Name;
 }
 
+
+
+/*
+* Function: readScoreOverall
+* Description: This function will return student overall score 
+* Input:
+* Output:
+*   Score_Overall - double - student overall score
+*/
 double Student::readScoreOverall()
 {
     return Score_Overall;
 }
 
+
+/*
+* Function: setInfo
+* Description: This function will overwrite student info from keyboard, student info include: name, age, gender
+* Input:
+* Output:
+*/
 void Student::setInfo()
 {
     std::string name;
@@ -111,6 +182,15 @@ void Student::setInfo()
         }
 }
 
+
+
+
+/*
+* Function: setScore
+* Description: This function will overwrite student score from keyboard, student score include: math, physic, chemical
+* Input:
+* Output:
+*/
 void Student::setScore()
 {
     int math, physic, chemical;
@@ -155,8 +235,19 @@ void Student::setScore()
     Score_Overall = (Score_Math + Score_Physic + Score_Chemical) / 3;
 }
 
+
+
+/*
+* Function: addStudent
+* Description: This function will add a new student to a list, info and score of new student will get from keyboard
+* Input:
+*   database - address of fisrt node in a list, has datatype Student - pass by reference 
+* Output:
+*   a list with new student 
+*/
 void Student::addStudent(std::list <Student> &database)
 {
+    // Get student info and score from keyboard
     std::cout << "Enter student info: " << '\n';
     
     std::cout << "Name: " << '\n';
@@ -227,12 +318,25 @@ void Student::addStudent(std::list <Student> &database)
         }
     } while (Score_Chemical < 0 || Score_Chemical > 10);
     
+    // create a new student with info and score have from keyboard
     Student newStudent(Name, Age, Gender, Score_Math, Score_Physic, Score_Chemical);
 
+
+    // add that student at the end of the list
     database.push_back(newStudent);
 
 }
 
+
+
+/*
+* Function: updateInfo
+* Description: This function will update info and score of a student by ID
+* Input:
+*   id - an integer value - id of student you want to update info 
+*   database - address of fisrt node in a list, has datatype Student - pass by reference
+* Output:
+*/
 void Student::updateInfo(std::list <Student> &database, int id)
 {
     std::list<Student> ::iterator it;
@@ -245,7 +349,7 @@ void Student::updateInfo(std::list <Student> &database, int id)
     {
         if ((*it).readID() == id)
         {
-            std::cout << "Update info for student ID " << id << '\n';
+            std::cout << "Update info and score for student ID " << id << '\n';
             (*it).setInfo();
             (*it).setScore();
             checkID = 0;
@@ -259,6 +363,18 @@ void Student::updateInfo(std::list <Student> &database, int id)
     
 }
 
+
+
+
+
+/*
+* Function: deleteByID
+* Description: This function will delete a student from a list by ID
+* Input:
+*   id - an integer value - id of student you want to update info 
+*   database - address of fisrt node in a list, has datatype Student - pass by reference
+* Output:
+*/
 void Student::deleteByID(std::list <Student> &database, int id)
 {
     std::list<Student> ::iterator it;
@@ -290,6 +406,16 @@ void Student::deleteByID(std::list <Student> &database, int id)
 }
 
 
+
+
+/*
+* Function: searchByName
+* Description: This function will search to check if there is any student have the same name with name input
+* Input:
+*   name - a string value - name of student you want to check
+*   database - address of fisrt node in a list, has datatype Student - pass by reference
+* Output:
+*/
 void Student::searchByName(std::list <Student> &database, std::string name)
 {
     std::list<Student> ::iterator it;
@@ -316,6 +442,14 @@ void Student::searchByName(std::list <Student> &database, std::string name)
     }
 }
 
+
+/*
+* Function: print
+* Description: This function will print info and score of every student in the list
+* Input:
+*   database - address of fisrt node in a list, has datatype Student - pass by reference
+* Output:
+*/
 void Student::print(std::list <Student> &database)
 {
     std::list <Student> ::iterator it;

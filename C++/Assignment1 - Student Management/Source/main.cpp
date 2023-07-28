@@ -1,5 +1,9 @@
-#include <iostream>
-#include <list>
+/*
+* File: main.cpp
+* Author: Phan Hoang Trung
+* Date: 28/07/2023
+* Description: This is a main file for testing student management program
+*/
 
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\student.hpp"
 
