@@ -1,0 +1,153 @@
+/*
+* File: main.c
+* Author: Phan Hoang Trung
+* Date: 14/07/2023
+* Description: This is a text file for conclusion theory OOP in C++
+*/
+
+4 Pillars of OOP in C++:
+- Inheritance   // Tính kế thừa
+- Polymorphism  / Tính đa hình
+- Encapsulation // Tính đóng gói
+- Abstraction   // Tính trừu tượng
+
+1. Inheritance
+- There are 3 type of Inheritance:
++ public
++ protected
++ private
+Example: we have two class: Human and Student. Student Inheritance from Human, so there is 3 type Inheritance.
+
+class Human{
+    private:
+        //data A
+    protected:
+        //data B
+    public:
+        //function C
+};
+
+class Student : public/protected/private Human{
+    private:
+        // data E
+    protected:
+        // data F
+    public:
+        // data G
+};
+
+In the class Student:
+- public case:
+data B will declare in protected 
+function C will declare in public 
+
+- protected case:
+data B will declare in protected
+function C will declare in protected
+
+- private case:
+data B will declare in private
+function C will declare in private
+
+2. Polymorphism
+- Function overloading ( achived at compile time) provide multiple definitions of the function by changing signature i.e. changing number of input parameters, change datatype of parameters, return type doesn't play any role.
+example: we have 2 function have the same name " add ", but input parameters are different.
+void add(int a, int b)
+{
+    std::cout << "Sum of a and b is: " << a + b << endl;
+}
+
+void add(float a, float b)
+{
+    std::cout << "Sum of a and b is: " << a + b << endl;
+}
+
+int main()
+{
+    add(5,6);
+    add((float) 6.2, (float) 7.3);
+    return 0;
+}
+Our console will print:
+Sum of a and b is: 11
+Sum of a and b is: 13.5
+
+The program will know which function to choose base on input parameter.
+
+- Function overriding ( achived at runtime) redefinition of base class function in it's derived class with same signature i.e. return type and parameters
+It can onyl be done in derived class
+example: we have 2 class: Animal, Dog. Dog is Inheritance public type from class Animal
+Class Animal
+{
+    public:
+    virtual void print()
+    {
+        std::cout << "This is class Animal" << endl;
+    }
+    void display()
+    {
+        std::cout << "This is test in class Animal" << endl;
+    }
+};
+
+Class Dog: public Animal 
+{
+    public:
+    void print()
+    {
+        std::cout << "This is class Dog" << endl;
+    }
+};
+
+int main()
+{
+    Dog dog1;
+    dog1.print();
+    dog1.display();
+    return 0;
+}
+
+Our console will print:
+This is class Dog
+This is test in class Animal
+
+
+
+
+3. Encapsulation
+- property of class cannot access directly (which mean only declare in private or protected), It only access through a method
+which mean, you don't want your data can change by other, you must declare all your data in private or protected 
+and your data can be read by using a method
+
+Example:
+class Human{
+    private:
+        int DataA = 10; // This data only read, cannot change, cannot access directly
+        int DataB;      // This data can overwrite and read, cannot access directly
+    protected:
+        int DataC = 20; // This data only read, cannot change, cannot access directly
+        int DataD;      // This data can overwrite and read, cannot access directly
+    public:
+        int getPrivate(){       // this is a method to get dataA in private
+            return dataA;
+        }
+
+        int getProtected(){     // this is a method to get dataC in protected
+            return dataC;
+        }
+
+        void enterDataPrivate(int data){    // this is a method to enter a value to DataB in private
+            DataB = data;
+        }
+
+        void enterDataProtected(int data){  // this is a method to enter a value to DataD in protected
+            DataD = data;
+        }
+
+        void printDataB(){                  // this is a method to print DataB in private to console
+            std::cout << "DataB in private is: " << DataB << '\n';
+        }
+};
+
+4. Abstraction
+- Abstraction is the process of only showing the necessary detals to the users and hiding the other details in the background

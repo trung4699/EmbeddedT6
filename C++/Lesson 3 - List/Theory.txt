@@ -1,0 +1,35 @@
+Vector:
+using library:
+#include <vector>
+
+vector are the same with dynamic allocated array, and it have some function 
+
+List:
+Base on what we have learn about Linked list in C, now in C++ it provides a library 
+#include <list> 
+to define a list, and all function of it
+
+Lambda:
+structure:
+[ capture clause ] (parameters) -> return-type  
+{   
+   definition of method   
+} 
+
+example:
+[](int a, int b) -> int
+{
+    return a + b;
+}
+
+#define PI 3.14; 
+const int g = 9.8;
+
+[PI, g](int r) -> double
+{
+    return PI * r;
+}
+
+
+target of using Lambda: minimize memory needed to use
+Lambda take a role like a local variable, after done using, deallocated it.
