@@ -1,11 +1,12 @@
 /*
 * File: main.cpp
 * Author: Phan Hoang Trung
-* Date: 28/07/2023
+* Date: 29/07/2023
 * Description: This is a main file for testing student management program
 */
 
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\student.hpp"
+
 
 int main()
 {
@@ -20,12 +21,13 @@ int main()
     database.push_back(student2);   // add student2 to database
     database.push_back(student3);   // add student3 to database
 
+   
     student.addStudent(database);   // add new student to database from keyboard
     student.addStudent(database);   // add new student to database from keyboard
     
     std::cout << "Print student list: " << '\n';
     student1.print(database);  
-
+    
     std::cout << "Update info for student ID 232 - This in main file " << '\n';
     student1.updateInfo(database, 232);
 
@@ -58,7 +60,17 @@ int main()
     std::cout << "Search name Trang" << '\n';
     student1.searchByName(database,"Trang");
 
+    std::cout << "Print the list before sort by GPA" << '\n';
+    student1.print(database);
 
+    std::cout << "Now sort the list by GPA and then print the list" << '\n';
+    student1.sortByGPA(database);
+    student1.print(database);
+
+    std::cout << "Now sort the list by name and then print the list" << '\n';
+    student1.sortByName(database);
+    student1.print(database);
+    
 
     return 0;
 }

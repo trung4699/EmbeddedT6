@@ -4,7 +4,7 @@
 /*
 * File: student.hpp
 * Author: Phan Hoang Trung
-* Date: 28/07/2023
+* Date: 29/07/2023
 * Description: This is a file include everything in preprocessor for student.cpp and main.cpp
 */
 
@@ -59,6 +59,8 @@ public:
     void searchByName(std::list <Student> &database, std::string name);
 
     void print(std::list <Student> &database);
+    void sortByGPA(std::list <Student> &database);
+    void sortByName(std::list <Student> &database);
 
 };
 

@@ -1,9 +1,9 @@
 /*
 * File: student.cpp
 * Author: Phan Hoang Trung
-* Date: 28/07/2023
+* Date: 29/07/2023
 * Description: This is a main file for program student management assignment
-* Haven't done sort requirement
+* 
 */
 
 
@@ -461,4 +461,33 @@ void Student::print(std::list <Student> &database)
         (*it).getScore();
     }
     
+}
+
+
+
+
+/*
+* Function: sortByGPA
+* Description: This function will sort the list ascending by student GPA
+* Input:
+*   database - address of fisrt node in a list, has datatype Student - pass by reference
+* Output:
+*/
+void Student::sortByGPA(std::list <Student> &database)
+{
+    database.sort([](Student &a, Student &b) -> bool{return a.readScoreOverall() < b.readScoreOverall() ;});
+}
+
+
+
+/*
+* Function: sortByName
+* Description: This function will sort the list ascending by student name
+* Input:
+*   database - address of fisrt node in a list, has datatype Student - pass by reference
+* Output:
+*/
+void Student::sortByName(std::list <Student> &database)
+{
+    database.sort([](Student &a, Student &b) -> bool{return a.readName() < b.readName() ;});
 }
