@@ -1,15 +1,14 @@
 /*
 * File: student.cpp
 * Author: Phan Hoang Trung
-* Date: 29/07/2023
-* Description: This is a main file for program student management assignment
+* Date: 30/07/2023
+* Description: This is a file for function definition 
 * 
 */
 
 
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\student.hpp"
-
-#include <algorithm>
+#include <cassert>
 
 /*
 * Function: Student()
@@ -24,15 +23,15 @@
 * Output:
 *   
 */
-Student::Student(std::string name = "Trung", int age = 24, TypeGender gender = Male, double math = 0, double physic = 0, double chemical = 0)
+Student::Student(std::string name = "Trung", int age = 24, TypeGender gender = Male, double score_math = 0, double score_physic = 0, double score_chemical = 0)
 {
     
     Name = name;
     Age = age;
     Gender = gender;
-    Score_Math = math;
-    Score_Physic = physic;
-    Score_Chemical = chemical;
+    Score_Math = score_math;
+    Score_Physic = score_physic;
+    Score_Chemical = score_chemical;
     Score_Overall = (Score_Math + Score_Physic + Score_Chemical)  / 3;
 
     static int id = 230000;
@@ -41,81 +40,42 @@ Student::Student(std::string name = "Trung", int age = 24, TypeGender gender = M
 }
 
 
+
 /*
 * Function: getID
-* Description: This function will print ID of student
-* Input:
-* Output:
-*/
-void Student::getID()
-{
-    std::cout << "ID: " << ID << '\n';
-}
-
-/*
-* Function: getInfo
-* Description: This function will print info of student: name, age, gender
-* Input:
-* Output:
-*/
-void Student::getInfo()
-{
-    std::cout << "This is Student " << Name << '\n';
-    std::cout << "Age: " << Age << '\n';
-    switch (Gender)
-    {
-    case 0:
-        std::cout << "Gender: Male" << '\n';
-        break;
-    case 1:
-        std::cout << "Gender: Female" << '\n';
-        break;
-    default:
-        break;
-    }
-}
-
-
-
-/*
-* Function: getScore
-* Description: This function will print student score: math, physic, chemical and overall
-* Input:
-* Output:
-*/
-void Student::getScore()
-{
-    std::cout << "Student " << Name << " has scores: " << '\n';
-    std::cout << "Math score: " << Score_Math << '\n';
-    std::cout << "Physic score: " << Score_Physic << '\n';
-    std::cout << "Chemical score: " << Score_Chemical << '\n';
-    std::cout << "Overall: " << Score_Overall << '\n';
-    std::cout << '\n';
-}
-
-/*
-* Function: readID
-* Description: This function will return ID of student
+* Description: This function will return student ID
 * Input:
 * Output:
 *   ID - integer - student ID
 */
-int Student::readID()
+int Student::getID()
 {
     return ID;
 }
 
 
 /*
-* Function: readName
+* Function: getName
 * Description: This function will return student name
 * Input:
 * Output:
 *   Name - string - student name
 */
-std::string Student::readName()
+std::string Student::getName()
 {
     return Name;
+}
+
+/*
+* Function: setName
+* Description: This function will set new name to student
+* Input:
+*   name - string - new name of student
+* Output:
+*/
+void Student::setName(std::string name)
+{
+    Name = name;
 }
 
 
@@ -127,367 +87,227 @@ std::string Student::readName()
 * Output:
 *   Score_Overall - double - student overall score
 */
-double Student::readScoreOverall()
+double Student::getScoreOverall()
 {
-    return Score_Overall;
+    return Score_Overall = (Score_Math + Score_Physic + Score_Chemical) / 3;
+}
+
+
+
+
+/*
+* Function: getAge
+* Description: This function will return student age
+* Input:
+* Output:
+*   Age - int - student age, age is from 0 to 100
+*/
+int Student::getAge()
+{
+    return Age;
 }
 
 
 /*
-* Function: setInfo
-* Description: This function will overwrite student info from keyboard, student info include: name, age, gender
+* Function: setAge
+* Description: This function will set new age to student
 * Input:
+*   age - integer - new age of student, age is from 0 to 100
 * Output:
 */
-void Student::setInfo()
+void Student::setAge(int age)
 {
-    std::string name;
-    int age;
+    assert((age >= 0 && age <= 100) && "ERROR: Age is from 0 to 100");
     
-    std::cout << "Name: " << '\n';
-    std::cin >> name;
-    
-    do
-    {
-        std::cout << "Age: " << '\n';
-        std::cin >> age;
-        if (age < 18 || age > 25)
-        {
-            std::cout << "Age is not suitable, please try again" << '\n';
-        }
-        
-    } while (age < 18 || age > 25);
-
-    int gender;
-    do
-    {
-        std::cout << "Gender: 0 - Male/ 1 - Female" << '\n';
-        std::cin >> gender;
-        if (gender != 0 && gender != 1)
-        {
-            std::cout << "Wrong number, enter 0 for Male, 1 for Female." << '\n';
-        }
-        
-    } while (gender != 0 && gender != 1);
-
-    Name = name;
     Age = age;
-    if (gender == 0)
-        {
-            Gender = Male;
-        }
-    if (gender == 1)
-        {
-            Gender = Female;
-        }
+}
+
+
+/*
+* Function: getGender
+* Description: This function will return student gender
+* Input:
+* Output:
+*   Gender - TypeGender - student gender
+*/
+TypeGender Student::getGender()
+{
+    return Gender;
+}
+
+
+/*
+* Function: setGender
+* Description: This function will set new gender to student
+* Input:
+*   gender - TypeGender - new gender of student
+* Output:
+*/
+void Student::setGender(TypeGender gender)
+{
+    assert((gender == Male || gender == Female) && "ERROR: gender is Male or Female" );
+    Gender = gender;
 }
 
 
 
 
 /*
-* Function: setScore
-* Description: This function will overwrite student score from keyboard, student score include: math, physic, chemical
+* Function: getScoreMath
+* Description: This function will return student math score
 * Input:
 * Output:
+*   Score_Math - double - student math score
 */
-void Student::setScore()
+double Student::getScoreMath()
 {
-    int math, physic, chemical;
-    do
-    {
-        std::cout << "Math score: " << '\n';
-        std::cin >> math;
+    return Score_Math;
+}
 
-        if (math < 0 || math > 10)
-        {
-            std::cout << "Math score is not suitable, please try again" << '\n';
-        }
-        
-    } while (math < 0 || math > 10);
 
-    do
-    {
-        std::cout << "Physic score: " << '\n';
-        std::cin >> physic;
-
-        if (physic < 0 || physic > 10)
-        {
-            std::cout << "Physic score is not suitable, please try again" << '\n';
-        }
-    } while (physic < 0 || physic > 10);
-
-    do
-    {
-        std::cout << "Chemical score: " << '\n';
-        std::cin >> chemical;
-
-        if (chemical < 0 || chemical > 10)
-        {
-            std::cout << "Chemical score is not suitable, please try again" << '\n';
-        }
-    } while (chemical < 0 || chemical > 10);
-
-    Score_Math = math;
-    Score_Physic = physic;
-    Score_Chemical = chemical;
-
-    Score_Overall = (Score_Math + Score_Physic + Score_Chemical) / 3;
+/*
+* Function: setScoreMath
+* Description: This function will set new math score to student
+* Input:
+*   score_math - double - new math score of student, math_score is from 0 to 10
+* Output:
+*/
+void Student::setScoreMath(double score_math)
+{
+    assert((score_math >= 0 && score_math <= 10) && "ERROR: Math score is from 0 to 10");
+    Score_Math = score_math;
 }
 
 
 
 /*
-* Function: addStudent
-* Description: This function will add a new student to a list, info and score of new student will get from keyboard
+* Function: getScorePhysic
+* Description: This function will return student physic score
 * Input:
-*   database - address of fisrt node in a list, has datatype Student - pass by reference 
 * Output:
-*   a list with new student 
+*   Score_Physic - double - student physic score
 */
-void Student::addStudent(std::list <Student> &database)
+double Student::getScorePhysic()
 {
-    // Get student info and score from keyboard
-    std::cout << "Enter student info: " << '\n';
-    
-    std::cout << "Name: " << '\n';
-    std::cin >> Name;
-    
-    do
-    {
-        std::cout << "Age: " << '\n';
-        std::cin >> Age;
-        if (Age < 18 || Age > 25)
-        {
-            std::cout << "Age is not suitable, please try again" << '\n';
-        }
-    } while (Age < 18 || Age > 25);
-
-    int gender;
-    do
-    {
-        std::cout << "Gender: 0 - Male/ 1 - Female" << '\n';
-        std::cin >> gender;
-        if (gender == 0)
-        {
-            Gender = Male;
-        }
-        if (gender == 1)
-        {
-            Gender = Female;
-        }
-
-        if (gender != 0 && gender != 1)
-        {
-            std::cout << "Wrong number, enter 0 for Male, 1 for Female." << '\n';
-        }
-        
-    } while (gender != 0 && gender != 1);
-    
-    do
-    {
-        std::cout << "Math score: " << '\n';
-        std::cin >> Score_Math;
-
-        if (Score_Math < 0 || Score_Math > 10)
-        {
-            std::cout << "Math score is not suitable, please try again" << '\n';
-        }
-
-    } while (Score_Math < 0 || Score_Math > 10);
-
-    do
-    {
-        std::cout << "Physic score: " << '\n';
-        std::cin >> Score_Physic;
-
-        if (Score_Physic < 0 || Score_Physic > 10)
-        {
-            std::cout << "Physic score is not suitable, please try again" << '\n';
-        }
-    } while (Score_Physic < 0 || Score_Physic > 10);
-
-    do
-    {
-        std::cout << "Chemical score: " << '\n';
-        std::cin >> Score_Chemical;
-
-        if (Score_Chemical < 0 || Score_Chemical > 10)
-        {
-            std::cout << "Chemical score is not suitable, please try again" << '\n';
-        }
-    } while (Score_Chemical < 0 || Score_Chemical > 10);
-    
-    // create a new student with info and score have from keyboard
-    Student newStudent(Name, Age, Gender, Score_Math, Score_Physic, Score_Chemical);
+    return Score_Physic;
+}
 
 
-    // add that student at the end of the list
-    database.push_back(newStudent);
+/*
+* Function: setScorePhysic
+* Description: This function will set new physic score to student
+* Input:
+*   score_physic - double - new physic score of student, physic_score is from 0 to 10
+* Output:
+*/
+void Student::setScorePhysic(double score_physic)
+{
+    assert((score_physic >= 0 && score_physic <= 10) && "ERROR: Physic score is from 0 to 10");
+    Score_Physic = score_physic;
+}
 
+
+
+
+/*
+* Function: getScoreChemical
+* Description: This function will return student chemical score
+* Input:
+* Output:
+*   Score_Chemical - double - student chemical score
+*/
+double Student::getScoreChemical()
+{
+    return Score_Chemical;
 }
 
 
 
 /*
-* Function: updateInfo
-* Description: This function will update info and score of a student by ID
+* Function: setScoreChemical
+* Description: This function will set new chemical score to student
 * Input:
-*   id - an integer value - id of student you want to update info 
-*   database - address of fisrt node in a list, has datatype Student - pass by reference
+*   score_chemical - double - new chemical score of student, chemical_score is from 0 to 10
 * Output:
 */
-void Student::updateInfo(std::list <Student> &database, int id)
+void Student::setScoreChemical(double score_chemical)
 {
-    std::list<Student> ::iterator it;
+    assert((score_chemical >= 0 && score_chemical <= 10) && "ERROR: Chemical score is from 0 to 10");
+    Score_Chemical = score_chemical;
+}
 
-    bool checkID = 1;
 
-    std::cout << "Checking ID ... " << '\n';
-    
-    for (it = database.begin(); it != database.end(); it++)
+/*
+* Function: getRank
+* Description: This function will return student rank
+* Input:
+* Output:
+*   Rank - TypeRank - student rank
+*/
+TypeRank Student::getRank()
+{
+    if (getScoreOverall() >= 8)
     {
-        if ((*it).readID() == id)
-        {
-            std::cout << "Update info and score for student ID " << id << '\n';
-            (*it).setInfo();
-            (*it).setScore();
-            checkID = 0;
-        }
+        return Rank = Excellent;
     }
-
-    if (checkID)
+    else if (getScoreOverall() >= 6.5)
     {
-        std::cout << "ID unfound" << '\n';
+        return Rank = Great;
     }
-    
-}
-
-
-
-
-
-/*
-* Function: deleteByID
-* Description: This function will delete a student from a list by ID
-* Input:
-*   id - an integer value - id of student you want to update info 
-*   database - address of fisrt node in a list, has datatype Student - pass by reference
-* Output:
-*/
-void Student::deleteByID(std::list <Student> &database, int id)
-{
-    std::list<Student> ::iterator it;
-
-    std::list<Student> ::iterator ptr;
-
-    bool checkID = 1;
-
-    std::cout << "Checking ID ... " << '\n';
-    
-    for (it = database.begin(); it != database.end(); it++)
+    else if (getScoreOverall() >= 5)
     {
-        if ((*it).readID() == id)
-        {
-            ptr = it;
-            checkID = 0;
-        }
-    }
-
-    if (checkID)
-    {
-        std::cout << "ID unfound" << '\n';
+        return Rank = Middle;
     }
     else
     {
-        std::cout << "Delete student ID " << id << '\n';
-        database.erase(ptr);
+        return Rank = Weak;
     }
 }
 
-
-
-
 /*
-* Function: searchByName
-* Description: This function will search to check if there is any student have the same name with name input
+* Function: printInfo
+* Description: This function will print student info
 * Input:
-*   name - a string value - name of student you want to check
-*   database - address of fisrt node in a list, has datatype Student - pass by reference
 * Output:
 */
-void Student::searchByName(std::list <Student> &database, std::string name)
+void Student::printInfo()
 {
-    std::list<Student> ::iterator it;
+    std::cout << "This is student " << Name << " Info: " << '\n';
+    std::cout << "ID: " << ID << '\n';
+    std::cout << "Age: " << Age << '\n';
 
-    bool checkName = 1;
-
-    std::cout << "Checking Name ... " << '\n';
-    
-    for (it = database.begin(); it != database.end(); it++)
+    if (Gender == Male)
     {
-        if ((*it).readName() == name)
-        {
-            std::cout << "Student found: " << '\n';
-            (*it).getID();
-            (*it).getInfo();
-            (*it).getScore();
-            checkName = 0;
-        }
+        std::cout << "Gender: Male" << '\n';
     }
-
-    if (checkName)
+    else
     {
-        std::cout << "Student unfound" << '\n';
-    }
-}
-
-
-/*
-* Function: print
-* Description: This function will print info and score of every student in the list
-* Input:
-*   database - address of fisrt node in a list, has datatype Student - pass by reference
-* Output:
-*/
-void Student::print(std::list <Student> &database)
-{
-    std::list <Student> ::iterator it;
-
-    for ( it = database.begin(); it != database.end(); it++)
-    {
-        (*it).getID();
-        (*it).getInfo();
-        (*it).getScore();
+        std::cout << "Gender: Female" << '\n';
     }
     
-}
+    std::cout << "Math score: " << Score_Math << '\n';
+    std::cout << "Physic score: " << Score_Physic << '\n';
+    std::cout << "Chemical score: " << Score_Chemical << '\n';
+    std::cout << "Overall: " << Score_Overall << '\n';
 
+    getRank();
+    switch (Rank)
+    {
+    case Excellent:
+        std::cout << "Rank: Excellent" << '\n';
+        break;
+    case Great:
+        std::cout << "Rank: Great" << '\n';
+        break;
+    case Middle:
+        std::cout << "Rank: Middle" << '\n';
+        break;
+    case Weak:
+        std::cout << "Rank: Weak" << '\n';
+        break;
 
+    default:
+        break;
+    }
 
-
-/*
-* Function: sortByGPA
-* Description: This function will sort the list ascending by student GPA
-* Input:
-*   database - address of fisrt node in a list, has datatype Student - pass by reference
-* Output:
-*/
-void Student::sortByGPA(std::list <Student> &database)
-{
-    database.sort([](Student &a, Student &b) -> bool{return a.readScoreOverall() < b.readScoreOverall() ;});
-}
-
-
-
-/*
-* Function: sortByName
-* Description: This function will sort the list ascending by student name
-* Input:
-*   database - address of fisrt node in a list, has datatype Student - pass by reference
-* Output:
-*/
-void Student::sortByName(std::list <Student> &database)
-{
-    database.sort([](Student &a, Student &b) -> bool{return a.readName() < b.readName() ;});
 }

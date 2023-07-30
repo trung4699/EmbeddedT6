@@ -4,8 +4,8 @@
 /*
 * File: student.hpp
 * Author: Phan Hoang Trung
-* Date: 29/07/2023
-* Description: This is a file include everything in preprocessor for student.cpp and main.cpp
+* Date: 30/07/2023
+* Description: This is a file include function declaration of student 
 */
 
 #include <iostream>
@@ -20,7 +20,7 @@ typedef enum
 
 typedef enum
 {
-    Excelent,
+    Excellent = 1,
     Great,
     Middle,
     Weak
@@ -40,28 +40,36 @@ private:
     TypeRank Rank;
     
 public:
-    Student(std::string name, int age, TypeGender gender, double math, double physic, double chemical);
+    Student(std::string name, int age, TypeGender gender, double score_math, double score_physic, double score_chemical);
 
-    void getID();
-    void getInfo();
-    void getScore();
+    int getID();
 
-    int readID();
-    std::string readName();
-    double readScoreOverall();
+    std::string getName();
+    void setName(std::string name);
 
-    void setInfo();
-    void setScore();
+    int getAge();
+    void setAge(int age);
 
-    void addStudent(std::list <Student> &database);
-    void updateInfo(std::list <Student> &database, int id);
-    void deleteByID(std::list <Student> &database, int id);
-    void searchByName(std::list <Student> &database, std::string name);
+    TypeGender getGender();
+    void setGender(TypeGender gender);
 
-    void print(std::list <Student> &database);
-    void sortByGPA(std::list <Student> &database);
-    void sortByName(std::list <Student> &database);
+    double getScoreMath();
+    void setScoreMath(double score_math);
 
+    double getScorePhysic();
+    void setScorePhysic(double score_physic);
+
+    double getScoreChemical();
+    void setScoreChemical(double score_chemical);
+
+    TypeRank getRank();
+
+    double getScoreOverall();
+
+    void printInfo();
+
+    
 };
+
 
 #endif
