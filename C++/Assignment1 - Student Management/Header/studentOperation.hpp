@@ -12,9 +12,9 @@
 
 
     void addStudent(std::list <Student> &database);
-    void updateInfo(std::list <Student> &database, int id);
-    void deleteByID(std::list <Student> &database, int id);
-    void searchByName(std::list <Student> &database, std::string name);
+    void updateInfo(std::list <Student> &database );
+    void deleteByID(std::list <Student> &database );
+    void searchByName(std::list <Student> &database );
 
     void print(std::list <Student> &database);
     void sortByGPA(std::list <Student> &database);

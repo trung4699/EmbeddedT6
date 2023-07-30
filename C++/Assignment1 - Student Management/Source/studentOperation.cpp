@@ -1,6 +1,18 @@
+/*
+* File: studentOperation.cpp
+* Author: Phan Hoang Trung
+* Date: 30/07/2023
+* Description: This is a file for function definition for some operation with database
+* 
+*/
+
+
 
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\studentOperation.hpp"
 #include <cassert>
+
+
+
 /*
 * Function: addStudent
 * Description: This function will add a new student to a list, info and score of new student will get from keyboard
@@ -87,13 +99,16 @@ void addStudent(std::list <Student> &database)
 * Function: updateInfo
 * Description: This function will update info and score of a student by ID
 * Input:
-*   id - an integer value - id of student you want to update info 
 *   database - address of fisrt node in a list, has datatype Student - pass by reference
 * Output:
 */
-void updateInfo(std::list <Student> &database, int id)
+void updateInfo(std::list <Student> &database)
 {
     std::list<Student> ::iterator it;
+
+    int id;
+    std::cout << "Enter ID you want to update: " << '\n';
+    std::cin >>id;
 
     bool checkID = 1;
 
@@ -213,15 +228,16 @@ void updateInfo(std::list <Student> &database, int id)
 * Function: deleteByID
 * Description: This function will delete a student from a list by ID
 * Input:
-*   id - an integer value - id of student you want to update info 
 *   database - address of fisrt node in a list, has datatype Student - pass by reference
 * Output:
 */
-void deleteByID(std::list <Student> &database, int id)
+void deleteByID(std::list <Student> &database)
 {
-    std::list<Student> ::iterator it;
+    std::list<Student> ::iterator it, ptr;
 
-
+    int id;
+    std::cout << "Enter ID you want to delete: " << '\n';
+    std::cin >> id;
     bool checkID = 1;
 
     std::cout << "Checking ID ... " << '\n';
@@ -230,8 +246,7 @@ void deleteByID(std::list <Student> &database, int id)
     {
         if ((*it).getID() == id)
         {
-            std::cout << "Delete student ID " << id << '\n';
-            database.erase(it);
+            ptr = it;
             checkID = 0;
         }
     }
@@ -239,6 +254,11 @@ void deleteByID(std::list <Student> &database, int id)
     if (checkID)
     {
         std::cout << "ID unfound" << '\n';
+    }
+    else
+    {
+        std::cout << "Delete student ID " << id << '\n';
+        database.erase(ptr);
     }
 }
 
@@ -249,7 +269,6 @@ void deleteByID(std::list <Student> &database, int id)
 * Function: searchByName
 * Description: This function will search to check if there is any student have the same name with name input
 * Input:
-*   name - a string value - name of student you want to check
 *   database - address of fisrt node in a list, has datatype Student - pass by reference
 * Output:
 */
@@ -271,8 +290,7 @@ void searchByName(std::list <Student> &database)
         if ((*it).getName() == name)
         {
             std::cout << "Student found: " << '\n';
-            std::cout << "ID: " << (*it).getID() << '\n';
-            
+            (*it).printInfo();
             count_name++;
         }
     }
@@ -308,37 +326,48 @@ void print(std::list <Student> &database)
     }
 }
 
-
-void swap(std::list <Student> ::iterator *student1, std::list <Student> ::iterator *student2)
+/*
+* Function: swap
+* Description: This function will swap the value of two node
+* Input:
+*   student1 - pointer has Student datatype - address of the first node you want to swap value
+*   student2 - pointer has Student datatype - address of the second node you want to swap value
+* Output:
+*/
+void swap( Student *student1,  Student *student2)
 {
-    std::list <Student> ::iterator temp = *student1;
-    (*(*student1)) = (*(*student2));
-    (*(*student2)) = (*temp);
+    Student temp = *student1;   // initilize temp to store value of student1
+    *student1 = *student2;      // change value of student1 to student2
+    *student2 = temp;           // change value of student2 to student1
 }
-
-
-void sortByGPA(std::list <Student> &database)
-{
-
-    std::list <Student> ::iterator i;
-    std::list <Student> ::iterator j;
-    
-    i = database.begin();
-    std::cout << (*i).getName() << '\n';
-    j = ++i;
-    std::cout << (*j).getName() << '\n';
-    swap(&i , &j);
-}
-
-
 
 /*
 * Function: sortByGPA
-* Description: This function will sort the list ascending by student GPA
+* Description: This function will sort the list ascending by student GPA, using bubble sort method
 * Input:
 *   database - address of fisrt node in a list, has datatype Student - pass by reference
 * Output:
 */
+void sortByGPA(std::list <Student> &database)
+{
+    std::list <Student> ::iterator i;   // using iterator i for outer loop
+    std::list <Student> ::iterator j;   // using iterator j for inner loop
+    for ( i = database.begin(); i != database.end(); ++i)
+    {
+        for ( j = database.begin(); j != database.end(); ++j)
+        {
+            if ((*i).getScoreOverall() < (*j).getScoreOverall())
+            {          
+                swap(&(*i), &(*j));     
+            }
+            if ((*i).getScoreOverall() == (*j).getScoreOverall() && (*i).getName() < (*j).getName())
+            {
+                swap(&(*i), &(*j));  
+            }
+            
+        }
+    }
+}
 
 
 
@@ -351,5 +380,21 @@ void sortByGPA(std::list <Student> &database)
 */
 void sortByName(std::list <Student> &database)
 {
-    database.sort([](Student &a, Student &b) -> bool{return a.getName() < b.getName() ;});
+    std::list <Student> ::iterator i;   //using iterator i for outer loop
+    std::list <Student> ::iterator j;   //using iterator j for inner loop
+    for ( i = database.begin(); i != database.end(); ++i)
+    {
+        for ( j = database.begin(); j != database.end(); ++j)
+        {
+            if ((*i).getName() < (*j).getName())    // because string in C++ has support to compare 2 string, so don't have to program
+            {          
+                swap(&(*i), &(*j));     
+            }
+            if ((*i).getName() == (*j).getName() && (*i).getScoreOverall() < (*j).getScoreOverall() )
+            {
+                swap(&(*i), &(*j)); 
+            }
+            
+        }
+    }
 }

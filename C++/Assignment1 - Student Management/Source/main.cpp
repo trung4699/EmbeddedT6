@@ -6,10 +6,11 @@
 */
 
 
+//#include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\student.hpp"
+//#include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\studentOperation.hpp"
+
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\student.hpp"
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment1 - Student Management\Header\studentOperation.hpp"
-
-
 
 int main()
 {
@@ -25,7 +26,6 @@ int main()
     database.push_back(student2);   // add student2 to database
     database.push_back(student3);   // add student3 to database
 
-
     
     addStudent(database);   // add new student to database from keyboard
     addStudent(database);   // add new student to database from keyboard
@@ -33,49 +33,29 @@ int main()
     std::cout << "Print student list: " << '\n';
     print(database);  
     
-    std::cout << "Update info for student ID 232 - This in main file " << '\n';
-    updateInfo(database, 232);
+    updateInfo(database);
 
-    std::cout << "Update info for student ID 230002 - This in main file " << '\n';
-    updateInfo(database, 230002);
-
-    std::cout << "Print student list after update info for ID 230002" << '\n';
+    std::cout << "Print student list after update info: " << '\n';
     print(database);
 
-    std::cout << "Delete student ID 2303 - This in main file" << '\n';
-    deleteByID(database, 2303);
+    deleteByID(database);
 
-    std::cout << "Delete student ID 230003 - This in main file" << '\n';
-    deleteByID(database, 230003);
-
-    std::cout << "Print student list after delete student ID 230003" << '\n';
+    std::cout << "Print student list after delete student ID: " << '\n';
     print(database);
 
-    std::cout << "Test function search by name " << '\n';
+    searchByName(database);
 
-    std::cout << "Search name Linh" << '\n';
-    searchByName(database, "Linh");
-
-    std::cout << "Search name Trung" << '\n';
-    searchByName(database,"Trung");
-
-    std::cout << "Search name Phong" << '\n';
-    searchByName(database,"Phong");
-
-    std::cout << "Search name Trang" << '\n';
-    searchByName(database,"Trang");
-
-    /*std::cout << "Print the list before sort by GPA" << '\n';
+    std::cout << "Print the list before sort by GPA" << '\n';
     print(database);
 
     std::cout << "Now sort the list by GPA and then print the list" << '\n';
     sortByGPA(database);
-    print(database);*/
+    print(database);
 
     std::cout << "Now sort the list by name and then print the list" << '\n';
     sortByName(database);
     print(database);
     
-
+    
     return 0;
 }
