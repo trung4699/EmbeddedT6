@@ -219,6 +219,8 @@ int main()
                 }
             }
             std::cout << '\n';
+            std::cout << "X: Unavailable" << '\n';
+            std::cout << "O: Available" << '\n';
             std::cout << "---------------------------------------------" << '\n';
 
             unsigned int chooseTable;
@@ -234,7 +236,7 @@ int main()
             do
             {
                 int selectOptionTable; 
-                
+                std::cout << "This is table " << chooseTable + 1 << '\n';
                 do
                 {
                     std::cout << "Please select option by enter number: " << '\n';
