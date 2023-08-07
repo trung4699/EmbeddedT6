@@ -31,7 +31,7 @@ int main()
         int program;
         do
         {
-            std::cout << "Please enter number to access program: 1 or 2 " << '\n';
+            std::cout << "Please enter number to access program:  " << '\n';
             std::cout << "1. Dishes management " << '\n';
             std::cout << "2. Staff " << '\n';
             std::cout << "3. Stop " << '\n';
