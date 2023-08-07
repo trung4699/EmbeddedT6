@@ -100,7 +100,7 @@ void updateInfoDish(std::list <Dish> &menu)
                 
                 do
                 {
-                    printMenu(menu);
+                    (*it).printInfo();
                     std::cout << "Please choose number to update info of dish: " << '\n' ;
                     std::cout << "1. Name " << '\n';
                     std::cout << "2. Price " << '\n';
