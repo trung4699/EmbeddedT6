@@ -1,0 +1,13 @@
+STM32_Master - Arduino_Slave
+
+STM32:
+A7 - CS/SS - output
+A6 - SCLK - output
+A5 - MOSI - output
+A4 - MISO - input
+
+Aruidno:
+3 - SCLK - input
+7 - CS/SS - input
+5 - MOSI - input
+4 - MISO - output
