@@ -11,9 +11,16 @@ private:
 public:
     Floor();
 
-    void setRoom();
-    void selectRoom(Customer customer_room);
-    void printRoomStatus();
+    void setRoom(int numberRoom);
+
+    std::vector <Room> getRoomData();
+    
+    int getNumberOfRoom();
+    void checkOutRoom(int numberRoom);
+    void setFreeRoom(int numberRoom);
+
+    void selectRoom(Customer customer_room, int room);
+  
     
 };
 

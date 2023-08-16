@@ -48,10 +48,11 @@ public:
     std::string getAddress();
     void setAddress(std::string address);
 
-    void checkInAndOut();
+    void addCheckInAndOutHistory();
+    Check getCheckInOut();
     
-    void printBookingHistory();
-    void printInfo();
+    std::list <BookingHistory> getBookingHistory();
+    
 };
 
 

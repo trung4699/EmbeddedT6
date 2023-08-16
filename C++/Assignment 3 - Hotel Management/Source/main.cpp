@@ -53,7 +53,7 @@ void customerManagement(std::list <Customer> &Customer_Database)
 
         else if (checkCustomerSelection == 5)
         {
-            printBookingHistory(Customer_Database);
+            checkPhoneToPrintBookingHistory(Customer_Database);
         }
 
 
@@ -93,13 +93,20 @@ void floorManagement(std::vector <Floor> &Hotel_Floor)
 
         else if (checkFloorSelection == 2)
         {
-            int floor;
+            int floorNumber, roomNumber;
             do
             {
                 std::cout << "Select floor to set up room to serve: " << '\n';
-                std::cin >> floor;
-            } while (floor > (int) Hotel_Floor.size());
-            Hotel_Floor.at(floor-1).setRoom();
+                std::cin >> floorNumber;
+            } while (floorNumber > (int) Hotel_Floor.size());
+
+            do
+            {
+                std::cout << "Enter number of room serve in this floor: " << '\n';
+                std::cin >> roomNumber;
+            } while (roomNumber < 1);
+            
+            Hotel_Floor.at(floorNumber-1).setRoom(roomNumber);
         }
 
         else if (checkFloorSelection == 3)
@@ -190,7 +197,45 @@ void employeeManagement(std::list <Employee> &Employee_Database)
     } while (checkContinue);
 }
 
+void roomManagement(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Customer_Database)
+{
+    bool checkContinue = true;
+    do
+    {
+        int checkRoomManagementSelection;
+        do
+        {
+            std::cout << "Please select option by enter number: " << '\n'
+                      << "1. Check in " << '\n'
+                      << "2. Check out " << '\n'
+                      << "3. Set room free " << '\n'
+                      << "0. Back " << '\n';
+            std::cin >> checkRoomManagementSelection;
+        } while (checkRoomManagementSelection != 1 && checkRoomManagementSelection != 2  && checkRoomManagementSelection != 3  && checkRoomManagementSelection != 0);
+    
+        if (checkRoomManagementSelection == 1)
+        {
+            roomCheckIn(Hotel_Floor, Customer_Database);
+        }
 
+        else if (checkRoomManagementSelection == 2)
+        {
+            roomCheckOut(Hotel_Floor, Customer_Database);
+        }
+
+        else if (checkRoomManagementSelection == 3)
+        {
+            roomSetFree(Hotel_Floor);
+        }
+        
+
+        else if (checkRoomManagementSelection == 0)
+        {
+            checkContinue = false;
+        }
+
+    } while (checkContinue);
+}
 
 int main()
 {
@@ -230,9 +275,10 @@ int main()
                       << "2. Customer Management " << '\n'
                       << "3. Employee Management " << '\n'
                       << "4. Floor Management " << '\n'
+                      << "5. Room Management " << '\n'
                       << "0. Stop " << '\n';
             std::cin >> checkProgramSelection;
-        } while (checkProgramSelection != 1 && checkProgramSelection != 2 && checkProgramSelection != 3 && checkProgramSelection != 4 &&checkProgramSelection != 0);
+        } while (checkProgramSelection != 1 && checkProgramSelection != 2 && checkProgramSelection != 3 && checkProgramSelection != 4 && checkProgramSelection != 5 && checkProgramSelection != 0);
         
         if (checkProgramSelection == 1)
         {
@@ -252,6 +298,12 @@ int main()
         else if (checkProgramSelection == 4)
         {
             floorManagement(Hotel_Floor);
+        }
+
+        
+        else if (checkProgramSelection == 5)
+        {
+            roomManagement(Hotel_Floor, Customer_Database);
         }
 
         else if (checkProgramSelection == 0)

@@ -37,7 +37,10 @@ public:
     WorkSchedule(Date date, ShiftWork shift);
 
     int getID();
-    void printShift();
+
+    ShiftWork getShiftWork();
+
+    Date getDateWork();
 };
 
 
@@ -64,9 +67,10 @@ public:
     JobPosition getPosition();
     void setPosition(JobPosition position);
 
-    void addShift();
-    void deleteShift();
-    void printWorkSchedule();
+    std::list <WorkSchedule> getWorkSchedule();
+
+    void addShift(WorkSchedule workschedule);
+    void deleteShift(int id);
 
     void changePassword(std::string password);
 
@@ -74,10 +78,8 @@ public:
     bool checkLogInUsername(User_Account account);
     bool checkLogInPassword(User_Account account);
 
-    bool checkAdminLogIn();
+    bool checkAdminLogIn(User_Account checkAdminAccount);
     void checkLogOut();
-
-    void printInfo();
 
 };
 

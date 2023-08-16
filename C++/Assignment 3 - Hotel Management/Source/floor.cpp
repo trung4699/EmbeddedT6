@@ -6,63 +6,33 @@ Floor::Floor()
     NumberOfRoom.resize(1);
 }
 
-void Floor::setRoom()
+void Floor::setRoom(int numberRoom)
 {
-    int numberRoom;
-    std::cout << "Enter number of room serve in this floor: " << '\n';
-    std::cin >> numberRoom;
 
     NumberOfRoom.resize(numberRoom);
-    std::cout << "Set up success " << '\n';
 }
 
-
-void Floor::selectRoom(Customer customer_room)
+std::vector <Room> Floor::getRoomData()
 {
-    int room;
-    do
-    {
-        std::cout << "Enter room you want to book: " << '\n';
-        std::cin >> room;
-    } while (room > (int)NumberOfRoom.size() || room < 1);
-    
-    NumberOfRoom.at(room - 1).bookingRoom(customer_room);
-
+    return NumberOfRoom;
 }
 
-void Floor::printRoomStatus()
+int Floor::getNumberOfRoom()
 {
-    int countRoom = 1;
-    
-    std::cout << "Room: " << "\t\t";
-    for (int i = 0; i < (int)NumberOfRoom.size(); ++i)
-    {
-        std::cout << countRoom << '\t';
-        ++countRoom;
-    }
-    
-    std::cout << '\n';
+    return NumberOfRoom.size();
+}
 
-    std::cout << "Status: " << '\t';
-    for (int i = 0; i < (int)NumberOfRoom.size(); ++i)
-    {
-        if (NumberOfRoom.at(i).getStatus() == Available)
-        {
-            std::cout << "A" << '\t';
-        }
-        else if (NumberOfRoom.at(i).getStatus() == Unavailable)
-        {
-            std::cout << "U" << '\t';
-        }
-        else if (NumberOfRoom.at(i).getStatus() == Cleaning)
-        {
-            std::cout << "C" << '\t';
-        }
-    }
+void Floor::selectRoom(Customer customer_room, int room)
+{
+    NumberOfRoom.at(room).bookingRoom(customer_room);
+}
 
-    std::cout << "A: Available " << '\n'
-              << "U: Unavailable " << '\n'
-              << "C: Cleaning " << '\n';
+void Floor::checkOutRoom(int numberRoom)
+{
+    NumberOfRoom.at(numberRoom).checkOut();
+}
 
-    std::cout << '\n';
+void Floor::setFreeRoom(int numberRoom)
+{
+    NumberOfRoom.at(numberRoom).freeRoom();
 }

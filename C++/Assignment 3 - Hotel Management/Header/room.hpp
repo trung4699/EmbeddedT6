@@ -21,13 +21,16 @@ private:
 public:
     Room();
 
+    int getID();
+
+    RoomStatus getStatus();
+
+    Customer getCustomerRoom();
+
     void bookingRoom(Customer customer_room);
     void checkOut();
-    int getID();
     
-    RoomStatus getStatus();
     void freeRoom();
-    void printCustomer();
 
 };
 

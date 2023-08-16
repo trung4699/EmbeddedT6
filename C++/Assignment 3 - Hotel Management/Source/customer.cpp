@@ -120,7 +120,7 @@ void Customer::setAddress(std::string address)
 *   check - Check - to check whether customer check in or check out
 * Output:
 */
-void Customer::checkInAndOut()
+void Customer::addCheckInAndOutHistory()
 {
     Time CheckTime;
 
@@ -155,7 +155,6 @@ void Customer::checkInAndOut()
     date.year = tm_local->tm_year + 1900;
 
     
-    
     BookingHistory newBooking;
     newBooking.time = CheckTime;
     newBooking.date = date;
@@ -164,58 +163,12 @@ void Customer::checkInAndOut()
     BookingHistoryData.push_back(newBooking);
 }
 
-
-/*
-* Function: printBookingHistory
-* Description: This function will print customer booking history
-* Input:
-* Output:
-*/
-void Customer::printBookingHistory()
+Check Customer::getCheckInOut()
 {
-    std::list <BookingHistory> ::iterator it;
-    
-    std::cout << "Customer " << Name << " booking history: " << '\n';
-    std::cout << "Time" << "\t\t|\t" <<  "Date" <<  "\t\t|\t" << "Check"  << '\n';
-    for (it = BookingHistoryData.begin(); it != BookingHistoryData.end(); ++it)
-    {
-        if ((*it).check == IN)
-        {
-            if ((*it).time.hours < 10 || (*it).time.minutes < 10 || (*it).time.seconds < 10)
-            {
-                std::cout << (*it).time.hours << ":" << (*it).time.minutes << ":" << (*it).time.seconds << "\t\t|\t"
-                          << (*it).date.day << "/" << (*it).date.month << "/" << (*it).date.year << "\t|\t"
-                          << "IN"  <<'\n';
-            }
-            else
-            {
-                std::cout << (*it).time.hours << ":" << (*it).time.minutes << ":" << (*it).time.seconds << "\t|\t"
-                          << (*it).date.day << "/" << (*it).date.month << "/" << (*it).date.year << "\t|\t"
-                          << "IN"  <<'\n';
-            }
-        }
-
-        else
-        {
-            if ((*it).time.hours < 10 || (*it).time.minutes < 10 || (*it).time.seconds < 10)
-            {
-                std::cout << (*it).time.hours << ":" << (*it).time.minutes << ":" << (*it).time.seconds << "\t\t|\t"
-                          << (*it).date.day << "/" << (*it).date.month << "/" << (*it).date.year << "\t|\t"
-                          << "OUT" <<'\n';
-            }
-            else
-            {
-                std::cout << (*it).time.hours << ":" << (*it).time.minutes << ":" << (*it).time.seconds << "\t|\t"
-                          << (*it).date.day << "/" << (*it).date.month << "/" << (*it).date.year << "\t|\t"
-                          << "OUT" <<'\n';
-            }
-            
-        }
-    }
-    
+    return CheckInOut;
 }
 
-void Customer::printInfo()
+std::list <BookingHistory> Customer::getBookingHistory()
 {
-    std::cout << Name << "\t|\t" << Phone << "\t|\t" << Address << '\n';
+    return BookingHistoryData;
 }
