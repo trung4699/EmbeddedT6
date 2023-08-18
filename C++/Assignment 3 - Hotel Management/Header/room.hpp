@@ -17,6 +17,7 @@ private:
     int ID;
     Customer Customer_Room;
     RoomStatus Status;
+    int Bill;
     
 public:
     Room();

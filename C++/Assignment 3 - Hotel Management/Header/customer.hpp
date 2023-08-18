@@ -20,10 +20,16 @@ typedef enum {
     OUT
 } Check;
 
+typedef enum {
+    No,
+    Yes
+} PaymentStatus;
+
 typedef struct {
     Date date;
     Time time;
     Check check;
+    PaymentStatus payment_status;
 }  BookingHistory;
 
 class Customer
@@ -50,6 +56,8 @@ public:
 
     void addCheckInAndOutHistory();
     Check getCheckInOut();
+
+    void setPaymentStatus(int day);
     
     std::list <BookingHistory> getBookingHistory();
     

@@ -34,17 +34,38 @@ Date WorkSchedule::getDateWork()
 }
 
 
-Employee::Employee(std::string name, std::string phone, JobPosition position)
+
+
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
+Employee::Employee(std::string name, std::string phone, JobPosition position, User_Account employee_account)
 {
     Authenticate_Employee = false;
     Authenticate_Admin = false;
     Name = name;
     Phone = phone;
     Position = position;
-    User_Account newAccount;
-    newAccount.userName = Name + Phone;
-    newAccount.password = Phone;
-    Account = newAccount;
+    Employee_Account = employee_account;
 }
 
 std::string Employee::getName()
@@ -86,6 +107,15 @@ void Employee::setPosition(JobPosition position)
     }
 }
 
+
+
+std::string Employee::getUsernameAccount()
+{
+    return Employee_Account.userName;
+}
+
+
+
 std::list <WorkSchedule> Employee::getWorkSchedule()
 {
     return Schedule_Database;
@@ -95,12 +125,12 @@ std::list <WorkSchedule> Employee::getWorkSchedule()
 void Employee::checkLogIn(User_Account account)
 {
     bool checkUserName = false, checkPassword = false;
-    if (Account.userName == account.userName || "Admin")
+    if (Employee_Account.userName == account.userName)
     {
         checkUserName = true;
     }
 
-    if (Account.password == account.password || "Admin")
+    if (Employee_Account.password == account.password)
     {
         checkPassword = true;
     }
@@ -114,12 +144,12 @@ void Employee::checkLogIn(User_Account account)
 
 bool Employee::checkLogInUsername(User_Account account)
 {
-    return (Account.userName == account.userName);
+    return (Employee_Account.userName == account.userName);
 }
 
 bool Employee::checkLogInPassword(User_Account account)
 {
-    return (Account.password == account.password);
+    return (Employee_Account.password == account.password);
 }
 
 
@@ -164,9 +194,9 @@ void Employee::deleteShift(int id)
 
 void Employee::changePassword(std::string password)
 {
-    if (Authenticate_Employee)
+    if (Authenticate_Employee || Authenticate_Admin)
     {
-        Account.password = password;
+        Employee_Account.password = password;
     }
     
 }

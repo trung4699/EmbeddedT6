@@ -51,12 +51,12 @@ private:
     std::string Phone;
     JobPosition Position;
     std::list <WorkSchedule> Schedule_Database;
-    User_Account Account;
+    User_Account Employee_Account;
     bool Authenticate_Employee;
     bool Authenticate_Admin;
 
 public:
-    Employee(std::string name, std::string phone, JobPosition position);
+    Employee(std::string name, std::string phone, JobPosition position, User_Account employee_account);
     
     std::string getName();
     void setName(std::string name);
@@ -66,6 +66,8 @@ public:
 
     JobPosition getPosition();
     void setPosition(JobPosition position);
+
+    std::string getUsernameAccount();
 
     std::list <WorkSchedule> getWorkSchedule();
 

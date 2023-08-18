@@ -11,9 +11,11 @@
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\operation.hpp"
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\room.hpp"
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\floor.hpp"
+#include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\security.hpp"
+#include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\bill.hpp"
 
 
-void customerManagement(std::list <Customer> &Customer_Database)
+void customerManagement(std::list <Customer> &Customer_Database, Security &Admin_Account_Original)
 {
     bool checkContinue = true;
     do
@@ -21,6 +23,7 @@ void customerManagement(std::list <Customer> &Customer_Database)
         int checkCustomerSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Please select option by enter number: " << '\n'
                       << "1. Add customer " << '\n'
                       << "2. Update information " << '\n'
@@ -53,7 +56,26 @@ void customerManagement(std::list <Customer> &Customer_Database)
 
         else if (checkCustomerSelection == 5)
         {
-            checkPhoneToPrintBookingHistory(Customer_Database);
+            
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            User_Account checkAdminAccount;
+            std::cout << "Enter admin username: " << '\n';
+            std::cin >> checkAdminAccount.userName;
+            std::cout << "Enter admin password: " << '\n';
+            std::cin >> checkAdminAccount.password;
+
+            Admin_Account_Original.checkAdminLogIn(checkAdminAccount);
+
+            if (Admin_Account_Original.getAuthenticate())
+            {
+                checkPhoneToPrintBookingHistory(Customer_Database);
+                Admin_Account_Original.adminLogOut();
+            }
+            else    
+            {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Wrong username or password " << '\n';
+            }
         }
 
 
@@ -66,7 +88,7 @@ void customerManagement(std::list <Customer> &Customer_Database)
 }
 
 
-void floorManagement(std::vector <Floor> &Hotel_Floor)
+void floorManagement(std::vector <Floor> &Hotel_Floor, Security &Admin_Account_Original)
 {
     bool checkContinue = true;
     do
@@ -74,6 +96,7 @@ void floorManagement(std::vector <Floor> &Hotel_Floor)
         int checkFloorSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Please select option by enter number: " << '\n'
                       << "1. Set number of floor to serve " << '\n'
                       << "2. Set number of room to serve in one floor " << '\n'
@@ -85,33 +108,90 @@ void floorManagement(std::vector <Floor> &Hotel_Floor)
     
         if (checkFloorSelection == 1)
         {
-            int numberFloor;
-            std::cout << "Enter number of floor to serve: " << '\n';
-            std::cin >> numberFloor;
-            Hotel_Floor.resize(numberFloor);
+            User_Account checkAdminAccount;
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Enter admin username: " << '\n';
+            std::cin >> checkAdminAccount.userName;
+            std::cout << "Enter admin password: " << '\n';
+            std::cin >> checkAdminAccount.password;
+
+            Admin_Account_Original.checkAdminLogIn(checkAdminAccount);
+
+            if (Admin_Account_Original.getAuthenticate())
+            {
+                int numberFloor;
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Enter number of floor to serve: " << '\n';
+                std::cin >> numberFloor;
+                Hotel_Floor.resize(numberFloor);
+                Admin_Account_Original.adminLogOut();
+            }
+            else    
+            {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Wrong username or password " << '\n';
+            }
         }
 
         else if (checkFloorSelection == 2)
         {
-            int floorNumber, roomNumber;
-            do
-            {
-                std::cout << "Select floor to set up room to serve: " << '\n';
-                std::cin >> floorNumber;
-            } while (floorNumber > (int) Hotel_Floor.size());
+            User_Account checkAdminAccount;
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Enter admin username: " << '\n';
+            std::cin >> checkAdminAccount.userName;
+            std::cout << "Enter admin password: " << '\n';
+            std::cin >> checkAdminAccount.password;
 
-            do
+            Admin_Account_Original.checkAdminLogIn(checkAdminAccount);
+
+            if (Admin_Account_Original.getAuthenticate())
             {
-                std::cout << "Enter number of room serve in this floor: " << '\n';
-                std::cin >> roomNumber;
-            } while (roomNumber < 1);
+                int floorNumber, roomNumber;
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                do
+                {
+                    std::cout << "Select floor to set up room to serve: " << '\n';
+                    std::cin >> floorNumber;
+                } while (floorNumber > (int) Hotel_Floor.size());
+
+                do
+                {
+                    std::cout << "Enter number of room serve in this floor: " << '\n';
+                    std::cin >> roomNumber;
+                } while (roomNumber < 1);
             
-            Hotel_Floor.at(floorNumber-1).setRoom(roomNumber);
+                Hotel_Floor.at(floorNumber-1).setRoom(roomNumber);
+                Admin_Account_Original.adminLogOut();
+            }
+            else    
+            {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Wrong username or password " << '\n';
+            }
         }
 
         else if (checkFloorSelection == 3)
         {
-            deleteFloor(Hotel_Floor);
+        
+            User_Account checkAdminAccount;
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Enter admin username: " << '\n';
+            std::cin >> checkAdminAccount.userName;
+            std::cout << "Enter admin password: " << '\n';
+            std::cin >> checkAdminAccount.password;
+
+            Admin_Account_Original.checkAdminLogIn(checkAdminAccount);
+
+            if (Admin_Account_Original.getAuthenticate())
+            {
+                deleteFloor(Hotel_Floor);
+                Admin_Account_Original.adminLogOut();
+            }
+            else    
+            {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Wrong username or password " << '\n';
+            }
         }
         
         else if (checkFloorSelection == 4)
@@ -136,6 +216,7 @@ void roomBooking( std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custom
         int checkBookRoomSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Please select option by enter number: " << '\n'
                       << "1. You are new customer " << '\n'
                       << "2. You already booking once  " << '\n'
@@ -163,7 +244,7 @@ void roomBooking( std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custom
 }
 
 
-void employeeManagement(std::list <Employee> &Employee_Database)
+void employeeManagement(std::list <Employee> &Employee_Database, Security &Admin_Account_Original)
 {
     bool checkContinue = true;
     do
@@ -171,6 +252,7 @@ void employeeManagement(std::list <Employee> &Employee_Database)
         int checkEmployeeSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Please select option by enter number: " << '\n'
                       << "1. Employee log in " << '\n'
                       << "2. Admin log in " << '\n'
@@ -185,7 +267,7 @@ void employeeManagement(std::list <Employee> &Employee_Database)
 
         else if (checkEmployeeSelection == 2)
         {
-            adminLogIn(Employee_Database);
+            adminLogIn(Employee_Database,Admin_Account_Original);
         }
         
 
@@ -205,6 +287,7 @@ void roomManagement(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Cust
         int checkRoomManagementSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Please select option by enter number: " << '\n'
                       << "1. Check in " << '\n'
                       << "2. Check out " << '\n'
@@ -237,10 +320,51 @@ void roomManagement(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Cust
     } while (checkContinue);
 }
 
+
+
+void paymentManagement(std::list <Customer> &Customer_Database, std::list <Bill> &Revenue_Database)
+{
+    bool checkContinue = true;
+    do
+    {
+        int checkPaymentSelection;
+        do
+        {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Please select option by enter number: " << '\n'
+                      << "1. Prepaid " << '\n'
+                      << "2. Postpaid " << '\n'
+                      << "0. Back " << '\n';
+            std::cin >> checkPaymentSelection;
+        } while (checkPaymentSelection != 1 && checkPaymentSelection != 2 &&  checkPaymentSelection != 0);
+    
+        if (checkPaymentSelection == 1)
+        {
+            prepaid(Revenue_Database);
+        }
+
+        else if (checkPaymentSelection == 2)
+        {
+           postpaid(Customer_Database,Revenue_Database);
+        }
+
+        else if (checkPaymentSelection == 0)
+        {
+            checkContinue = false;
+        }
+
+    } while (checkContinue);
+}
+
+
+
 int main()
 {
     std::list <Employee> Employee_Database;
     std::list <Customer> Customer_Database;
+    std::list <Bill> Revenue_Database;
+    
+    Security admin;
 
     int numberOfFloor = 1;
     std::vector <Floor> Hotel_Floor;
@@ -251,17 +375,11 @@ int main()
     Customer customer2("An", "987654321", "Q12");
     Customer customer3("Phong", "456798123", "Q10");
 
-    Employee employee1("TrungEmployee","0931202598",Hotel_Manager);
-    Employee employee2("Employee2","9876543210", Hotel_HouseKeeper);
-    Employee employee3("Employee3","6543219870", Maintainance_Technician);
 
     Customer_Database.push_back(customer1);
     Customer_Database.push_back(customer2);
     Customer_Database.push_back(customer3);
 
-    Employee_Database.push_back(employee1);
-    Employee_Database.push_back(employee2);
-    Employee_Database.push_back(employee3);
 
 
     bool checkContinue = true;
@@ -270,15 +388,17 @@ int main()
         int checkProgramSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Please enter number to access program: " << '\n'
                       << "1. Room booking " << '\n'
                       << "2. Customer Management " << '\n'
                       << "3. Employee Management " << '\n'
                       << "4. Floor Management " << '\n'
                       << "5. Room Management " << '\n'
+                      << "6. Payment " << '\n'
                       << "0. Stop " << '\n';
             std::cin >> checkProgramSelection;
-        } while (checkProgramSelection != 1 && checkProgramSelection != 2 && checkProgramSelection != 3 && checkProgramSelection != 4 && checkProgramSelection != 5 && checkProgramSelection != 0);
+        } while (checkProgramSelection != 1 && checkProgramSelection != 2 && checkProgramSelection != 3 && checkProgramSelection != 4 && checkProgramSelection != 5 && checkProgramSelection != 6 &&  checkProgramSelection != 0);
         
         if (checkProgramSelection == 1)
         {
@@ -287,23 +407,28 @@ int main()
 
         else if (checkProgramSelection == 2)
         {
-            customerManagement(Customer_Database);
+            customerManagement(Customer_Database, admin);
         }
 
         else if (checkProgramSelection == 3)
         {
-            employeeManagement(Employee_Database);
+            employeeManagement(Employee_Database, admin);
         }
 
         else if (checkProgramSelection == 4)
         {
-            floorManagement(Hotel_Floor);
+            floorManagement(Hotel_Floor,admin);
         }
 
         
         else if (checkProgramSelection == 5)
         {
             roomManagement(Hotel_Floor, Customer_Database);
+        }
+
+        else if (checkProgramSelection == 6)
+        {
+            paymentManagement(Customer_Database,Revenue_Database);
         }
 
         else if (checkProgramSelection == 0)

@@ -23,6 +23,7 @@ int Room::getID()
     return ID;
 }
 
+
 void Room::bookingRoom(Customer customer_room)
 {
     if (Status == Available)

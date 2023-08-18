@@ -2,6 +2,7 @@
 
 void employeeLogIn( std::list <Employee> &Employee_Database)
 {   
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::list <Employee> ::iterator it;
     std::string username, password;
     User_Account account;
@@ -28,12 +29,14 @@ void employeeLogIn( std::list <Employee> &Employee_Database)
             }
             else
             {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                 std::cout << "Wrong password " << '\n';
             }
         }
     }
     if (checkEmployeeAccount)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Username unfound " << '\n';
     }
     
@@ -48,6 +51,7 @@ void employeeUpdateInfo(Employee *employee)
         int checkEmployeeUpdateSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Please select option by enter number: " << '\n'
                       << "1. Update name " << '\n'
                       << "2. Update phone " << '\n'
@@ -60,6 +64,7 @@ void employeeUpdateInfo(Employee *employee)
     
         if (checkEmployeeUpdateSelection == 1)
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Enter your new name: " << '\n';
             std::string newName;
             std::cin >> newName;
@@ -68,6 +73,7 @@ void employeeUpdateInfo(Employee *employee)
 
         else if (checkEmployeeUpdateSelection == 2)
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Enter your new phone: " << '\n';
             std::string newPhone;
             std::cin >> newPhone;
@@ -76,6 +82,7 @@ void employeeUpdateInfo(Employee *employee)
 
         else if (checkEmployeeUpdateSelection == 3)
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Enter your new password: " << '\n';
             std::string newPassword;
             std::cin >> newPassword;
@@ -84,18 +91,21 @@ void employeeUpdateInfo(Employee *employee)
 
         else if (checkEmployeeUpdateSelection == 4)
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Name    " << "\t|\t" << "Phone   " << "\t|\t" << "Position" << '\n';
             employeePrintInfo(*employee);
         }
 
         else if (checkEmployeeUpdateSelection == 5)
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             printWorkSchedule(((*employee).getWorkSchedule()));
         }
         
         
         else if (checkEmployeeUpdateSelection == 0)
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             checkContinue = false;
             (*employee).checkLogOut();
         }
@@ -104,19 +114,14 @@ void employeeUpdateInfo(Employee *employee)
 }
 
 
-void printListEmployee(std::list <Employee> &Employee_Database)
+void printListEmployee(std::list <Employee> &Employee_Database, Security Admin_Account_Original)
 {
     std::list <Employee> ::iterator it;
 
     it = Employee_Database.begin();
 
-    User_Account checkAdminAccount;
-    std::cout << "Enter admin username: " << '\n';
-    std::cin >> checkAdminAccount.userName;
-    std::cout << "Enter admin password: " << '\n';
-    std::cin >> checkAdminAccount.password;
-
-    if ((*it).checkAdminLogIn(checkAdminAccount))
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+    if (Admin_Account_Original.getAuthenticate())
     {
         std::cout << "Name    " << "\t|\t" << "Phone   " << "\t|\t" << "Position" << '\n';
 
@@ -124,25 +129,108 @@ void printListEmployee(std::list <Employee> &Employee_Database)
         {
             employeePrintInfo((*it));
         }
-        (*it).checkLogOut();
     }
     
 }
 
 
-void employeeChangePosition(Employee *employee)
+void addEmployee(std::list <Employee> &Employee_Database, Security Admin_Account_Original)
 {
-    User_Account checkAdminAccount;
-    std::cout << "Enter admin username: " << '\n';
-    std::cin >> checkAdminAccount.userName;
-    std::cout << "Enter admin password: " << '\n';
-    std::cin >> checkAdminAccount.password;
+    if (Admin_Account_Original.getAuthenticate())
+    {
+        std::string nameEmployee, phoneEmployee;
+        JobPosition positionEmployee;
+        User_Account accountEmployee;
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+        std::cout << "Enter employee name: " << '\n';
+        std::cin >> nameEmployee;
 
-    if ((*employee).checkAdminLogIn(checkAdminAccount))
+        std::cout << "Enter employee phone: " << '\n';
+        std::cin >> phoneEmployee;
+
+        int positionSelection;
+        do
+        {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Enter employee position: " << '\n'
+                      << "1. Hotel Manager " << '\n'
+                      << "2. Room Attendant " << '\n'
+                      << "3. Hotel Receiptionist " << '\n'
+                      << "4. Hotel Housekeeper " << '\n'
+                      << "5. Maintainace Technician " << '\n';
+
+            std::cin >> positionSelection;
+        } while (positionSelection != 1 && positionSelection != 2 && positionSelection != 3 && positionSelection != 4 && positionSelection != 5);
+        
+        if (positionSelection == 1)
+        {
+            positionEmployee = Hotel_Manager;
+        }
+        else if (positionSelection == 2)
+        {
+            positionEmployee = Room_Attendant;
+        }
+        else if (positionSelection == 3)
+        {
+            positionEmployee = Hotel_Receptionist;
+        }
+        else if (positionSelection == 4)
+        {
+            positionEmployee = Hotel_HouseKeeper;
+        }
+        else if (positionSelection == 5)
+        {
+            positionEmployee = Maintainance_Technician;
+        }
+
+        
+        bool checkUsername = false;
+        do
+        {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Enter employee account username: " << '\n';
+            std::cin >> accountEmployee.userName;
+            std::list <Employee> ::iterator it;
+            for (it = Employee_Database.begin(); it != Employee_Database.end() ; ++it)
+            {
+                if ((*it).getUsernameAccount() == accountEmployee.userName)
+                {
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                    std::cout << "This username already exist " << '\n';
+                    checkUsername = true;
+                }
+            }
+            
+        } while (checkUsername);
+        
+
+        std::string checkPassword;
+        do
+        {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Enter employee account password: " << '\n';
+            std::cin >> accountEmployee.password;
+            std::cout << "Enter password again: " << '\n';
+            std::cin >> checkPassword;
+
+        } while (accountEmployee.password != checkPassword);
+        
+        Employee newEmployee(nameEmployee, phoneEmployee, positionEmployee, accountEmployee);
+        Employee_Database.push_back(newEmployee);
+        
+    }
+    
+}
+
+void employeeChangePosition(Employee *employee, Security Admin_Account_Original)
+{
+    
+    if (Admin_Account_Original.getAuthenticate())
     {
         int newPositionSelection;
         do
         {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             std::cout << "Enter new position: " << '\n'
                       << "1. Hotel Manager " << '\n'
                       << "2. Room Attendant " << '\n'
@@ -178,23 +266,19 @@ void employeeChangePosition(Employee *employee)
 }
 
 
-void employeeUpdateShift(Employee *employee)
+void employeeUpdateShift(Employee *employee, Security Admin_Account_Original)
 {
     bool checkContinue = true;
 
-    User_Account checkAdminAccount;
-    std::cout << "Enter admin username: " << '\n';
-    std::cin >> checkAdminAccount.userName;
-    std::cout << "Enter admin password: " << '\n';
-    std::cin >> checkAdminAccount.password;
 
-    if ((*employee).checkAdminLogIn(checkAdminAccount))
+    if (Admin_Account_Original.getAuthenticate())
     {
         do
         {
             int checkEmployeeUpdateSelection;
             do
             {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                 std::cout << "Please select option by enter number: " << '\n'
                           << "1. Add shift " << '\n'
                           << "2. Delete shift " << '\n'
@@ -235,179 +319,236 @@ void employeeUpdateShift(Employee *employee)
     
 }
 
-void adminLogIn(std::list <Employee> &Employee_Database)
+void adminLogIn(std::list <Employee> &Employee_Database, Security &Admin_Account_Original)
 {
-    bool checkContinue = true;
-    do
+    User_Account checkAdminAccount;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+    std::cout << "Enter admin username: " << '\n';
+    std::cin >> checkAdminAccount.userName;
+    std::cout << "Enter admin password " << '\n';
+    std::cin >> checkAdminAccount.password;
+    Admin_Account_Original.checkAdminLogIn(checkAdminAccount);
+
+    if (Admin_Account_Original.getAuthenticate())
     {
-        int checkEmployeeUpdateSelection;
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+        std::cout << "Login success " << '\n';
+        bool checkContinue = true;
         do
         {
-            std::cout << "Please select option by enter number: " << '\n'
-                      << "1. Print list employee " << '\n'
-                      << "2. Change position for employee " << '\n'
-                      << "3. Update work schedule for employee " << '\n'
-                      << "4. Update info for employee " << '\n'
-                      << "0. Log out " << '\n';
-            std::cin >> checkEmployeeUpdateSelection;
-        } while (checkEmployeeUpdateSelection != 1 && checkEmployeeUpdateSelection != 2 && checkEmployeeUpdateSelection != 3 && checkEmployeeUpdateSelection != 4 && checkEmployeeUpdateSelection != 0);
-    
-        if (checkEmployeeUpdateSelection == 1)
-        {
-            printListEmployee(Employee_Database);
-        }
-
-        else if (checkEmployeeUpdateSelection == 2)
-        {
-            bool checkChangePosition = false;
+            int checkEmployeeUpdateSelection;
             do
             {
-                bool checkPhone = true;
-
-                std::cout << "Enter employee phone to select " << '\n';
-                std::string phoneChangePosition;
-                std::cin >> phoneChangePosition;
-
-                std::list <Employee> ::iterator it;
-                for (it = Employee_Database.begin(); it != Employee_Database.end(); ++it)
-                {
-                    if ((*it).getPhone() == phoneChangePosition)
-                    {
-                        checkPhone = false;
-                        employeeChangePosition(&(*it));
-                    }
-                }
-
-                if (checkPhone)
-                {
-                    std::cout << "Phone doesn't exist " << '\n';
-                }
-
-                int checkChangeOtherEmployee;
-
-                do
-                {
-                    std::cout << "Do you want to change for other employee ? " << '\n'
-                              << "1. Yes " << '\n'
-                              << "0. 0 " << '\n';
-                    std::cin >> checkChangeOtherEmployee;        
-                } while (checkChangeOtherEmployee != 0 && checkChangeOtherEmployee != 1);
-                
-                if (checkChangeOtherEmployee == 1)
-                {
-                    checkChangePosition = true;
-                }
-                else if (checkChangeOtherEmployee == 0)
-                {
-                    checkChangePosition = false;
-                }
-                
-            } while (checkChangePosition);
-            
-        }
-
-        else if (checkEmployeeUpdateSelection == 3)
-        {
-            bool checkUpdateShift = false;
-            do
-            {
-                bool checkPhone = true;
-
-                std::cout << "Enter employee phone to select " << '\n';
-                std::string phoneUpdateShift;
-                std::cin >> phoneUpdateShift;
-
-                std::list <Employee> ::iterator it;
-                for (it = Employee_Database.begin(); it != Employee_Database.end(); ++it)
-                {
-                    if ((*it).getPhone() == phoneUpdateShift)
-                    {
-                        checkPhone = false;
-                        employeeUpdateShift(&(*it));
-                    }
-                }
-
-                if (checkPhone)
-                {
-                    std::cout << "Phone doesn't exist " << '\n';
-                }
-
-                int checkUpdateShiftOtherEmployee;
-
-                do
-                {
-                    std::cout << "Do you want to update for other employee ? " << '\n'
-                              << "1. Yes " << '\n'
-                              << "0. 0 " << '\n';
-                    std::cin >> checkUpdateShiftOtherEmployee;        
-                } while (checkUpdateShiftOtherEmployee != 0 && checkUpdateShiftOtherEmployee != 1);
-                
-                if (checkUpdateShiftOtherEmployee == 1)
-                {
-                    checkUpdateShift = true;
-                }
-                else if (checkUpdateShiftOtherEmployee == 0)
-                {
-                    checkUpdateShift = false;
-                }
-                
-            } while (checkUpdateShift);
-        }
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Please select option by enter number: " << '\n'
+                        << "1. Print list employee " << '\n'
+                        << "2. Add employee " << '\n'
+                        << "3. Change position for employee " << '\n'
+                        << "4. Update work schedule for employee " << '\n'
+                        << "5. Update info for employee " << '\n'
+                        << "6. Change password " << '\n'
+                        << "0. Log out " << '\n';
+                std::cin >> checkEmployeeUpdateSelection;
+            } while (checkEmployeeUpdateSelection != 1 && checkEmployeeUpdateSelection != 2 && checkEmployeeUpdateSelection != 3 && checkEmployeeUpdateSelection != 4 && checkEmployeeUpdateSelection != 5 && checkEmployeeUpdateSelection != 6 && checkEmployeeUpdateSelection != 0);
         
-        else if (checkEmployeeUpdateSelection == 4)
-        {
-            bool checkUpdateInfo = false;
-            do
+            if (checkEmployeeUpdateSelection == 1)
             {
-                bool checkPhone = true;
+                printListEmployee(Employee_Database,Admin_Account_Original);
+            }
 
-                std::cout << "Enter employee phone to select " << '\n';
-                std::string phoneUpdateShift;
-                std::cin >> phoneUpdateShift;
+            if (checkEmployeeUpdateSelection == 2)
+            {
+                addEmployee(Employee_Database, Admin_Account_Original);
+            }
 
-                std::list <Employee> ::iterator it;
-                for (it = Employee_Database.begin(); it != Employee_Database.end(); ++it)
+            else if (checkEmployeeUpdateSelection == 3)
+            {
+                bool checkChangePosition = false;
+                do
                 {
-                    if ((*it).getPhone() == phoneUpdateShift)
+                    bool checkPhone = true;
+
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                    std::cout << "Enter employee phone to select " << '\n';
+                    std::string phoneChangePosition;
+                    std::cin >> phoneChangePosition;
+
+                    std::list <Employee> ::iterator it;
+                    for (it = Employee_Database.begin(); it != Employee_Database.end(); ++it)
                     {
-                        checkPhone = false;
-                        employeeUpdateInfo(&(*it));
+                        if ((*it).getPhone() == phoneChangePosition)
+                        {
+                            checkPhone = false;
+                            employeeChangePosition(&(*it), Admin_Account_Original);
+                        }
                     }
-                }
 
-                if (checkPhone)
+                    if (checkPhone)
+                    {
+                        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                        std::cout << "Phone doesn't exist " << '\n';
+                    }
+
+                    int checkChangeOtherEmployee;
+
+                    do
+                    {
+                        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                        std::cout << "Do you want to change for other employee ? " << '\n'
+                                << "1. Yes " << '\n'
+                                << "0. 0 " << '\n';
+                        std::cin >> checkChangeOtherEmployee;        
+                    } while (checkChangeOtherEmployee != 0 && checkChangeOtherEmployee != 1);
+                    
+                    if (checkChangeOtherEmployee == 1)
+                    {
+                        checkChangePosition = true;
+                    }
+                    else if (checkChangeOtherEmployee == 0)
+                    {
+                        checkChangePosition = false;
+                    }
+                    
+                } while (checkChangePosition);
+                
+            }
+
+            else if (checkEmployeeUpdateSelection == 4)
+            {
+                bool checkUpdateShift = false;
+                do
                 {
-                    std::cout << "Phone doesn't exist " << '\n';
-                }
+                    bool checkPhone = true;
 
-                int checkUpdateInfoOtherEmployee;
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                    std::cout << "Enter employee phone to select " << '\n';
+                    std::string phoneUpdateShift;
+                    std::cin >> phoneUpdateShift;
+
+                    std::list <Employee> ::iterator it;
+                    for (it = Employee_Database.begin(); it != Employee_Database.end(); ++it)
+                    {
+                        if ((*it).getPhone() == phoneUpdateShift)
+                        {
+                            checkPhone = false;
+                            employeeUpdateShift(&(*it), Admin_Account_Original);
+                        }
+                    }
+
+                    if (checkPhone)
+                    {
+                        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                        std::cout << "Phone doesn't exist " << '\n';
+                    }
+
+                    int checkUpdateShiftOtherEmployee;
+
+                    do
+                    {
+                        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                        std::cout << "Do you want to update for other employee ? " << '\n'
+                                << "1. Yes " << '\n'
+                                << "0. 0 " << '\n';
+                        std::cin >> checkUpdateShiftOtherEmployee;        
+                    } while (checkUpdateShiftOtherEmployee != 0 && checkUpdateShiftOtherEmployee != 1);
+                    
+                    if (checkUpdateShiftOtherEmployee == 1)
+                    {
+                        checkUpdateShift = true;
+                    }
+                    else if (checkUpdateShiftOtherEmployee == 0)
+                    {
+                        checkUpdateShift = false;
+                    }
+                    
+                } while (checkUpdateShift);
+            }
+            
+            else if (checkEmployeeUpdateSelection == 5)
+            {
+                bool checkUpdateInfo = false;
+                do
+                {
+                    bool checkPhone = true;
+
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                    std::cout << "Enter employee phone to select " << '\n';
+                    std::string phoneUpdateShift;
+                    std::cin >> phoneUpdateShift;
+
+                    std::list <Employee> ::iterator it;
+                    for (it = Employee_Database.begin(); it != Employee_Database.end(); ++it)
+                    {
+                        if ((*it).getPhone() == phoneUpdateShift)
+                        {
+                            checkPhone = false;
+                            employeeUpdateInfo(&(*it));
+                        }
+                    }
+
+                    if (checkPhone)
+                    {
+                        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                        std::cout << "Phone doesn't exist " << '\n';
+                    }
+
+                    int checkUpdateInfoOtherEmployee;
+
+                    do
+                    {
+                        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                        std::cout << "Do you want to update for other employee ? " << '\n'
+                                << "1. Yes " << '\n'
+                                << "0. 0 " << '\n';
+                        std::cin >> checkUpdateInfoOtherEmployee;        
+                    } while (checkUpdateInfoOtherEmployee != 0 && checkUpdateInfoOtherEmployee != 1);
+                    
+                    if (checkUpdateInfoOtherEmployee == 1)
+                    {
+                        checkUpdateInfo = true;
+                    }
+                    else if (checkUpdateInfoOtherEmployee == 0)
+                    {
+                        checkUpdateInfo = false;
+                    }
+                    
+                } while (checkUpdateInfo);
+            }
+
+            else if (checkEmployeeUpdateSelection == 6)
+            {
+                std::string newPassword, checkPassword;
 
                 do
                 {
-                    std::cout << "Do you want to update for other employee ? " << '\n'
-                              << "1. Yes " << '\n'
-                              << "0. 0 " << '\n';
-                    std::cin >> checkUpdateInfoOtherEmployee;        
-                } while (checkUpdateInfoOtherEmployee != 0 && checkUpdateInfoOtherEmployee != 1);
-                
-                if (checkUpdateInfoOtherEmployee == 1)
-                {
-                    checkUpdateInfo = true;
-                }
-                else if (checkUpdateInfoOtherEmployee == 0)
-                {
-                    checkUpdateInfo = false;
-                }
-                
-            } while (checkUpdateInfo);
-        }
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                    std::cout << "Enter new password: " << '\n';
+                    std::cin >> newPassword;
+                    std::cout << "Enter password again: " << '\n';
+                    std::cin >> checkPassword;
+                } while (newPassword != checkPassword);
 
-        else if (checkEmployeeUpdateSelection == 0)
-        {
-            checkContinue = false;
-        }
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                Admin_Account_Original.setPassword(newPassword);
+                std::cout << "Change password success " << '\n';
+                
+            }
 
-    } while (checkContinue);
+            else if (checkEmployeeUpdateSelection == 0)
+            {
+                Admin_Account_Original.adminLogOut();
+                checkContinue = false;
+            }
+
+        } while (checkContinue);
+    }
+    else
+    {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+        std::cout << "Wrong username or password " << '\n';
+    }
+    
+
 }
 
 
@@ -433,7 +574,7 @@ void printShift(WorkSchedule schedule)
 void printWorkSchedule(const std::list <WorkSchedule> Schedule_Database)
 {
     std::list <WorkSchedule> ::iterator it;
-
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "ID" << "\t|\t" << "Shift   " << "\t|\t" << "Date" << '\n';
 
     for (auto it : Schedule_Database)
@@ -447,6 +588,7 @@ void printWorkSchedule(const std::list <WorkSchedule> Schedule_Database)
 int deleteShift(const std::list <WorkSchedule> Schedule_Database)
 {
     std::list <WorkSchedule> ::iterator it, ptr;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Enter ID of shift you want to delete: " << '\n';
     int deleteID;
     std::cin >> deleteID;
@@ -462,11 +604,13 @@ int deleteShift(const std::list <WorkSchedule> Schedule_Database)
 
     if (checkID)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "ID unfound " << '\n';
         deleteID = 0;
     }
     else
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Delete success " << '\n';
     }
 
@@ -481,6 +625,7 @@ void employeeAddShift(Employee *employee)
     ShiftWork newShiftWork;
     int numWorkShift;
 
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Enter work day: " << '\n';
     std::cin >> newDateWork.day;
 
@@ -557,6 +702,7 @@ void addCustomer(std::list <Customer> &Customer_Database)
 {
     std::string newName, newPhone, newAddress;
 
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Enter your name: " << '\n';
     std::cin >> newName;
 
@@ -577,6 +723,7 @@ void updateInfoCustomer(std::list <Customer> &Customer_Database)
     std::list <Customer> ::iterator it;
 
     std::string phone;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Enter your phone to update information " << '\n';
     std::cin >> phone;
 
@@ -590,6 +737,7 @@ void updateInfoCustomer(std::list <Customer> &Customer_Database)
                 int checkSelectionUpdateInfo;
                 do
                 {
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                     std::cout << "Please select option by enter number to update your info: " << '\n'
                               << "1. Name " << '\n'
                               << "2. Phone" << '\n'
@@ -600,6 +748,7 @@ void updateInfoCustomer(std::list <Customer> &Customer_Database)
                 if (checkSelectionUpdateInfo == 1)
                 {
                     std::string updateName;
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                     std::cout << "Enter your new name: " << '\n';
                     std::cin >> updateName;
                     (*it).setName(updateName);
@@ -608,6 +757,7 @@ void updateInfoCustomer(std::list <Customer> &Customer_Database)
                 else if (checkSelectionUpdateInfo == 2)
                 {
                     std::string updatePhone;
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                     std::cout << "Enter your new phone: " << '\n';
                     std::cin >> updatePhone;
                     (*it).setPhone(updatePhone);
@@ -616,6 +766,7 @@ void updateInfoCustomer(std::list <Customer> &Customer_Database)
                 else if (checkSelectionUpdateInfo == 3)
                 {
                     std::string updateAddress;
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                     std::cout << "Enter your new address: " << '\n';
                     std::cin >> updateAddress;
                     (*it).setPhone(updateAddress);
@@ -625,6 +776,7 @@ void updateInfoCustomer(std::list <Customer> &Customer_Database)
 
                 do
                 {
+                    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                     std::cout << "Do you want to update other information ? " << '\n'
                               << "1. Yes " << '\n'
                               << "0. No " << '\n';
@@ -658,6 +810,7 @@ void deleteCustomer(std::list <Customer> &Customer_Database)
     bool checkPhone = false;
     
     std::string phone;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Please enter your phone to delete " << '\n';
     std::cin >> phone;
 
@@ -673,10 +826,12 @@ void deleteCustomer(std::list <Customer> &Customer_Database)
     if (checkPhone)
     {
         Customer_Database.erase(ptr);
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Delete success " << '\n';
     }
     else
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Phone unfound " << '\n';
     }
     
@@ -684,6 +839,7 @@ void deleteCustomer(std::list <Customer> &Customer_Database)
 
 void printCustomerInfo(Customer customer)
 {
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Name" << "\t|\t" << "Phone" << "\t|\t" << "Address" << '\n';
     std::cout << customer.getName() << "\t|\t" << customer.getPhone() << "\t|\t" << customer.getAddress() << '\n';
     
@@ -692,6 +848,7 @@ void printCustomerInfo(Customer customer)
 void printListCustomer(const std::list <Customer> Customer_Database)
 {
     
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Name" << "\t|\t" << "Phone     " << "\t\t|\t" << "Address" << '\n';
     for (auto it : Customer_Database)
     {
@@ -711,7 +868,7 @@ void printListCustomer(const std::list <Customer> Customer_Database)
 void printCustomerBookingHistory(const std::list <BookingHistory> bookingHistoryData, const std::string nameCustomer)
 {
     
-    
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Customer " << nameCustomer << " booking history: " << '\n';
     std::cout << "Time" << "\t\t|\t" <<  "Date" <<  "\t\t|\t" << "Check"  << '\n';
     for (auto it : bookingHistoryData)
@@ -755,6 +912,7 @@ void checkPhoneToPrintBookingHistory(const std::list <Customer> Customer_Databas
 
     std::string phone;
     bool checkPhone = true;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Enter your phone to print booking history: " << '\n';
     std::cin >> phone;
     for (auto it : Customer_Database)
@@ -767,6 +925,7 @@ void checkPhoneToPrintBookingHistory(const std::list <Customer> Customer_Databas
     }
     if (checkPhone)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Phone unfound " << '\n';
     }
 }
@@ -777,10 +936,12 @@ void printCustomerCheckInOrOut(Customer customer)
 {
     if (customer.getCheckInOut() == IN)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Check in success " << '\n';
     }
     else if (customer.getCheckInOut() == OUT)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Check out success " << '\n';
     }
     
@@ -802,6 +963,7 @@ void printCustomerCheckInOrOut(Customer customer)
 
 void printListRoomStatus(std::vector <Floor> &Hotel_Floor)
 {
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     for (int i = 0; i < (int)Hotel_Floor.size(); ++i)
     {
         std::cout << "Floor " << i + 1 << " :" << '\n';
@@ -817,6 +979,7 @@ void deleteFloor(std::vector <Floor> &Hotel_Floor)
     int floorDelete;
     do
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Enter floor you want to delete: " << '\n';
         std::cin >> floorDelete;
     } while (floorDelete > (int)Hotel_Floor.size() );
@@ -835,6 +998,7 @@ void bookingRoom(std::list <Customer> &Customer_Database, std::vector <Floor> &H
 
     bool checkPhoneBooking = true;
     std::string phoneBookingRoom;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Enter your phone to book a room: " << '\n';
     std::cin >> phoneBookingRoom;
 
@@ -845,6 +1009,7 @@ void bookingRoom(std::list <Customer> &Customer_Database, std::vector <Floor> &H
             checkPhoneBooking = false;
             printListRoomStatus(Hotel_Floor);
             int floorBook, roomBook;
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
             do
             {
                 std::cout << "Enter floor have room you want to book: " << '\n';
@@ -858,7 +1023,6 @@ void bookingRoom(std::list <Customer> &Customer_Database, std::vector <Floor> &H
             } while (roomBook > Hotel_Floor.at(floorBook - 1).getNumberOfRoom() || roomBook < 1);
 
 
-            std::cout << "Enter room you want to book: " << '\n';
             if (Hotel_Floor.at(floorBook - 1).getRoomData().at(roomBook - 1).getStatus() == Available)
             {
                 Hotel_Floor.at(floorBook - 1).selectRoom(*(&(*it_customer)),roomBook - 1);
@@ -873,16 +1037,12 @@ void bookingRoom(std::list <Customer> &Customer_Database, std::vector <Floor> &H
                 std::cout << "Cannot book this room " << '\n';
             }
         }
-
-        if (checkPhoneBooking)
-        {
-            std::cout << "Wrong phone " << '\n';
-        }
         
     }
 
     if (checkPhoneBooking)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Wrong phone, please check again." << '\n'
                   << "If you are new, please register. " << '\n';
     }
@@ -938,7 +1098,7 @@ void printRoomStatus(Floor floor)
 void roomCheckIn(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Customer_Database)
 {
     bool checkPhone = true;
-
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Please enter your phone: " << '\n';
     std::string phoneRoomCheckIn;
     std::cin >> phoneRoomCheckIn;
@@ -949,6 +1109,7 @@ void roomCheckIn(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custome
         {
             if (Hotel_Floor.at(i).getRoomData().at(j).getCustomerRoom().getPhone() == phoneRoomCheckIn)
             {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                 std::cout << "Welcome " << Hotel_Floor.at(i).getRoomData().at(j).getCustomerRoom().getName() << '\n'   
                           << "Check in success " << '\n';
                 checkPhone = false;
@@ -958,6 +1119,7 @@ void roomCheckIn(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custome
     
     if (checkPhone)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Wrong phone " << '\n';
     }
     else
@@ -978,7 +1140,7 @@ void roomCheckIn(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custome
 void roomCheckOut(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Customer_Database)
 {
     bool checkPhone = true;
-
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Please enter your phone: " << '\n';
     std::string phoneRoomCheckOut;
     std::cin >> phoneRoomCheckOut;
@@ -989,9 +1151,19 @@ void roomCheckOut(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custom
         {
             if (Hotel_Floor.at(i).getRoomData().at(j).getCustomerRoom().getPhone() == phoneRoomCheckOut)
             {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
                 std::cout << "Hi " << Hotel_Floor.at(i).getRoomData().at(j).getCustomerRoom().getName() << '\n'   
                           << "Check out success " << '\n';
                 Hotel_Floor.at(i).checkOutRoom(j);
+
+                std::list <Customer> ::iterator ptr;
+                for (ptr = Customer_Database.begin(); ptr != Customer_Database.end(); ++ptr)
+                {
+                    if ((*ptr).getPhone() == phoneRoomCheckOut)
+                    {
+                        (*ptr).addCheckInAndOutHistory();
+                    }
+                }
                 checkPhone = false;
             }
         }
@@ -999,26 +1171,16 @@ void roomCheckOut(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custom
     
     if (checkPhone)
     {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
         std::cout << "Wrong phone " << '\n';
     }
-    else
-    {
-        std::list <Customer> ::iterator ptr;
-        for (ptr = Customer_Database.begin(); ptr != Customer_Database.end(); ++ptr)
-        {
-            if ((*ptr).getPhone() == phoneRoomCheckOut)
-            {
-                (*ptr).addCheckInAndOutHistory();
-            }
-            
-        }
-    }
+    
 }
 
 
 void roomSetFree(std::vector <Floor> &Hotel_Floor)
 {
-    
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     int floorNumber, roomNumber;
     do
     {
@@ -1050,3 +1212,135 @@ void roomSetFree(std::vector <Floor> &Hotel_Floor)
     
 }
 
+
+
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+void prepaid(std::list <Bill> &Revenue_Database)
+{
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+    int dayCheckIn, dayCheckOut;
+    std::cout << "Enter day check in: " << '\n';
+    std::cin >> dayCheckIn;
+    std::cout << "Enter day check out: " << '\n';
+    std::cin >> dayCheckOut;
+
+    Bill bill;
+    bill.setDayCheckIn(dayCheckIn);
+    bill.setDayCheckOut(dayCheckOut);
+
+    printBill(bill);
+    int checkPrepaidSelection;
+    do
+    {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+        std::cout << "Please select option by enter number: " << '\n'
+                  << "1. Make payment " << '\n'
+                  << "0. Back " << '\n';
+        std::cin >> checkPrepaidSelection;
+    } while (checkPrepaidSelection != 0 && checkPrepaidSelection != 1);
+
+    if (checkPrepaidSelection == 1)
+    {
+        Revenue_Database.push_back(bill);
+    }
+    else if (checkPrepaidSelection == 0)
+    {
+        
+    }
+    
+    
+    
+}
+
+void printBill(Bill bill)
+{
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+    std::cout << "Day check in: " << bill.getDayCheckIn() << '\n';
+    std::cout << "Day check out: " << bill.getDayCheckOut() << '\n';
+    std::cout << "Price per day: " << bill.getPrice() << '\n';
+    std::cout << "Payment total: " << bill.getPayment() <<'\n';
+}
+
+void postpaid(std::list <Customer> &Customer_Database, std::list <Bill> &Revenue_Database)
+{
+    int dayCheckIn, dayCheckOut;
+    std::string phonePostpaid;
+    bool checkPhonePaid = true;
+
+    std::cout << "Enter your phone to payment: " << '\n';
+    std::cin >> phonePostpaid;
+
+    std::list <Customer> ::iterator it, customer;
+    std::list <BookingHistory> ::iterator ptr;
+
+    for (it = Customer_Database.begin(); it != Customer_Database.end(); ++it)
+    {
+        if ((*it).getPhone() == phonePostpaid)
+        {
+            customer = it; 
+            for (ptr = (*it).getBookingHistory().begin(); ptr != (*it).getBookingHistory().end(); ++ptr)
+            {
+                if ((*ptr).payment_status == No)
+                {
+                    if ((*ptr).check == IN)
+                    {
+                        dayCheckIn = (*ptr).date.day;
+                    }
+                    else if ((*ptr).check == OUT)
+                    {
+                        dayCheckOut = (*ptr).date.day;
+                    }
+                }
+            }
+        }
+    }
+
+    if (checkPhonePaid)
+    {
+        std::cout << "Wrong phone " << '\n';
+    }
+    else
+    {
+        Bill bill;
+        bill.setDayCheckIn(dayCheckIn);
+        bill.setDayCheckOut(dayCheckOut);
+        
+        printBill(bill);
+        
+        
+
+        int checkPostpaidSelection;
+        do
+        {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Please select option by enter number: " << '\n'
+                    << "1. Make payment " << '\n'
+                    << "0. Back " << '\n';
+            std::cin >> checkPostpaidSelection;
+        } while (checkPostpaidSelection != 0 && checkPostpaidSelection != 1);
+
+        if (checkPostpaidSelection == 1)
+        {
+            Revenue_Database.push_back(bill);
+            (*customer).setPaymentStatus(dayCheckIn);
+            (*customer).setPaymentStatus(dayCheckOut);
+            std::cout << "Payment success " << '\n';
+        }
+        else if (checkPostpaidSelection == 0)
+        {
+            return;
+        }
+    }
+    
+
+    
+}

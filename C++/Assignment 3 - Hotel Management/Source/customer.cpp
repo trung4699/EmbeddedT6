@@ -154,11 +154,13 @@ void Customer::addCheckInAndOutHistory()
     date.month = tm_local->tm_mon + 1;
     date.year = tm_local->tm_year + 1900;
 
-    
+    PaymentStatus payment_status = No;
+
     BookingHistory newBooking;
     newBooking.time = CheckTime;
     newBooking.date = date;
     newBooking.check = CheckInOut;
+    newBooking.payment_status = payment_status;
 
     BookingHistoryData.push_back(newBooking);
 }
@@ -171,4 +173,19 @@ Check Customer::getCheckInOut()
 std::list <BookingHistory> Customer::getBookingHistory()
 {
     return BookingHistoryData;
+}
+
+
+void Customer::setPaymentStatus(int day)
+{
+    std::list <BookingHistory> ::iterator it;
+    for (it = BookingHistoryData.begin(); it != BookingHistoryData.end(); ++it)
+    {
+        if ((*it).date.day == day && (*it).payment_status == No)
+        {
+            (*it).payment_status = Yes;
+        }
+        
+    }
+    
 }
