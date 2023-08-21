@@ -319,7 +319,7 @@ void employeeUpdateShift(Employee *employee, Security Admin_Account_Original)
     
 }
 
-void adminLogIn(std::list <Employee> &Employee_Database, Security &Admin_Account_Original)
+void adminLogIn(std::list <Employee> &Employee_Database, Security &Admin_Account_Original, std::list <Bill> &Revenue_Database, std::vector <Floor> &Hotel_Floor, std::list <FeedbackAndRating> Feedback_Database)
 {
     User_Account checkAdminAccount;
     std::cout << "------------------------------------------------------------------------------------------ " << '\n';
@@ -347,9 +347,12 @@ void adminLogIn(std::list <Employee> &Employee_Database, Security &Admin_Account
                         << "4. Update work schedule for employee " << '\n'
                         << "5. Update info for employee " << '\n'
                         << "6. Change password " << '\n'
+                        << "7. Print revenue " << '\n'
+                        << "8. Occupancy rate " << '\n'
+                        << "9. Print customer feedback " << '\n'
                         << "0. Log out " << '\n';
                 std::cin >> checkEmployeeUpdateSelection;
-            } while (checkEmployeeUpdateSelection != 1 && checkEmployeeUpdateSelection != 2 && checkEmployeeUpdateSelection != 3 && checkEmployeeUpdateSelection != 4 && checkEmployeeUpdateSelection != 5 && checkEmployeeUpdateSelection != 6 && checkEmployeeUpdateSelection != 0);
+            } while (checkEmployeeUpdateSelection != 1 && checkEmployeeUpdateSelection != 2 && checkEmployeeUpdateSelection != 3 && checkEmployeeUpdateSelection != 4 && checkEmployeeUpdateSelection != 5 && checkEmployeeUpdateSelection != 6  && checkEmployeeUpdateSelection != 7 && checkEmployeeUpdateSelection != 8 && checkEmployeeUpdateSelection != 9 && checkEmployeeUpdateSelection != 0);
         
             if (checkEmployeeUpdateSelection == 1)
             {
@@ -532,6 +535,21 @@ void adminLogIn(std::list <Employee> &Employee_Database, Security &Admin_Account
                 Admin_Account_Original.setPassword(newPassword);
                 std::cout << "Change password success " << '\n';
                 
+            }
+
+            else if (checkEmployeeUpdateSelection == 7)
+            {
+                printRevenue(Revenue_Database, Admin_Account_Original);
+            }
+
+            else if (checkEmployeeUpdateSelection == 8)
+            {
+                printOccupancyRate(Hotel_Floor,Admin_Account_Original);
+            }
+
+            else if (checkEmployeeUpdateSelection == 9)
+            {
+                printListFeedback(Feedback_Database,Admin_Account_Original);
             }
 
             else if (checkEmployeeUpdateSelection == 0)
@@ -870,38 +888,38 @@ void printCustomerBookingHistory(const std::list <BookingHistory> bookingHistory
     
     std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Customer " << nameCustomer << " booking history: " << '\n';
-    std::cout << "Time" << "\t\t|\t" <<  "Date" <<  "\t\t|\t" << "Check"  << '\n';
+    std::cout << "Time" << "\t\t|\t" <<  "Date" <<  "\t\t|\t" << "Check"  <<  "\t\t|\t" << "Payment status"  << '\n';
     for (auto it : bookingHistoryData)
     {
         if (it.check == IN)
         {
-            if (it.time.hours < 10 || it.time.minutes < 10 || it.time.seconds < 10)
+            if (it.payment_status == Yes)
             {
-                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "\t\t|\t"
+                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "   " << "\t|\t"
                           << it.date.day << "/" << it.date.month << "/" << it.date.year << "\t|\t"
-                          << "IN"  <<'\n';
+                          << "IN" << "\t\t|\t" << "Yes" <<'\n';
             }
             else
             {
-                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "\t|\t"
+                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "   " << "\t|\t"
                           << it.date.day << "/" << it.date.month << "/" << it.date.year << "\t|\t"
-                          << "IN"  <<'\n';
+                          << "IN" << "\t\t|\t" << "No" <<'\n';
             }
         }
 
         else
         {
-            if (it.time.hours < 10 || it.time.minutes < 10 || it.time.seconds < 10)
+            if (it.payment_status == Yes)
             {
-                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "\t\t|\t"
+                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "   " << "\t|\t"
                           << it.date.day << "/" << it.date.month << "/" << it.date.year << "\t|\t"
-                          << "OUT"  <<'\n';
+                          << "OUT" << "\t\t|\t" << "Yes" <<'\n';
             }
             else
             {
-                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "\t|\t"
+                std::cout << it.time.hours << ":" << it.time.minutes << ":" << it.time.seconds << "   " << "\t|\t"
                           << it.date.day << "/" << it.date.month << "/" << it.date.year << "\t|\t"
-                          << "OUT"  <<'\n';
+                          << "OUT" << "\t\t|\t" << "No" <<'\n';
             }
         }
     }
@@ -1224,38 +1242,64 @@ void roomSetFree(std::vector <Floor> &Hotel_Floor)
 
 
 
-void prepaid(std::list <Bill> &Revenue_Database)
+void prepaid(std::list <Bill> &Revenue_Database, std::vector <Floor> &Hotel_Floor)
 {
     std::cout << "------------------------------------------------------------------------------------------ " << '\n';
-    int dayCheckIn, dayCheckOut;
-    std::cout << "Enter day check in: " << '\n';
-    std::cin >> dayCheckIn;
-    std::cout << "Enter day check out: " << '\n';
-    std::cin >> dayCheckOut;
-
-    Bill bill;
-    bill.setDayCheckIn(dayCheckIn);
-    bill.setDayCheckOut(dayCheckOut);
-
-    printBill(bill);
-    int checkPrepaidSelection;
-    do
+    bool checkPhone = false;
+    std::cout << "Enter your phone: " << '\n';
+    std::string phonePrepaid;
+    std::cin >> phonePrepaid;
+    for (int i = 0; i < (int)Hotel_Floor.size(); ++i)
     {
-        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
-        std::cout << "Please select option by enter number: " << '\n'
-                  << "1. Make payment " << '\n'
-                  << "0. Back " << '\n';
-        std::cin >> checkPrepaidSelection;
-    } while (checkPrepaidSelection != 0 && checkPrepaidSelection != 1);
-
-    if (checkPrepaidSelection == 1)
-    {
-        Revenue_Database.push_back(bill);
-    }
-    else if (checkPrepaidSelection == 0)
-    {
+        for (int j = 0; j < (int) Hotel_Floor.at(i).getNumberOfRoom(); ++j)
+        {
+            if (Hotel_Floor.at(i).getRoomData().at(j).getCustomerRoom().getPhone() == phonePrepaid)
+            {
+                checkPhone = true;
+            }
+            
+        }
         
     }
+
+    if (checkPhone)
+    {
+        int dayCheckIn, dayCheckOut;
+        std::cout << "Enter day check in: " << '\n';
+        std::cin >> dayCheckIn;
+        std::cout << "Enter day check out: " << '\n';
+        std::cin >> dayCheckOut;
+
+        Bill bill;
+        bill.setDayCheckIn(dayCheckIn);
+        bill.setDayCheckOut(dayCheckOut);
+
+        printBill(bill);
+        int checkPrepaidSelection;
+        do
+        {
+            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+            std::cout << "Please select option by enter number: " << '\n'
+                    << "1. Make payment " << '\n'
+                    << "0. Back " << '\n';
+            std::cin >> checkPrepaidSelection;
+        } while (checkPrepaidSelection != 0 && checkPrepaidSelection != 1);
+
+        if (checkPrepaidSelection == 1)
+        {
+            std::cout << "Payment success " << '\n';
+            Revenue_Database.push_back(bill);
+        }
+        else if (checkPrepaidSelection == 0)
+        {
+            
+        }
+    }
+    else
+    {
+        std::cout << "Wrong phone " << '\n';
+    }
+    
     
     
     
@@ -1275,31 +1319,63 @@ void postpaid(std::list <Customer> &Customer_Database, std::list <Bill> &Revenue
     int dayCheckIn, dayCheckOut;
     std::string phonePostpaid;
     bool checkPhonePaid = true;
-
+    bool checkPaymentStatus = true;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
     std::cout << "Enter your phone to payment: " << '\n';
     std::cin >> phonePostpaid;
 
-    std::list <Customer> ::iterator it, customer;
-    std::list <BookingHistory> ::iterator ptr;
+    std::list <Customer> ::iterator it;
 
     for (it = Customer_Database.begin(); it != Customer_Database.end(); ++it)
     {
         if ((*it).getPhone() == phonePostpaid)
         {
-            customer = it; 
-            for (ptr = (*it).getBookingHistory().begin(); ptr != (*it).getBookingHistory().end(); ++ptr)
+            checkPhonePaid = false;
+            for (auto ptr : (*it).getBookingHistory())
             {
-                if ((*ptr).payment_status == No)
+                if (ptr.payment_status == No)
                 {
-                    if ((*ptr).check == IN)
+                    checkPaymentStatus = false;
+                    if (ptr.check == IN)
                     {
-                        dayCheckIn = (*ptr).date.day;
+                        dayCheckIn = ptr.date.day;
                     }
-                    else if ((*ptr).check == OUT)
+                    else if (ptr.check == OUT)
                     {
-                        dayCheckOut = (*ptr).date.day;
+                        dayCheckOut = ptr.date.day;
                     }
                 }
+                
+            }
+
+            Bill bill;
+            bill.setDayCheckIn(dayCheckIn);
+            bill.setDayCheckOut(dayCheckOut);
+            
+            printBill(bill);
+            
+            
+            int checkPostpaidSelection;
+            do
+            {
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Please select option by enter number: " << '\n'
+                        << "1. Make payment " << '\n'
+                        << "0. Back " << '\n';
+                std::cin >> checkPostpaidSelection;
+            } while (checkPostpaidSelection != 0 && checkPostpaidSelection != 1);
+
+            if (checkPostpaidSelection == 1)
+            {
+                Revenue_Database.push_back(bill);
+                (*it).setPaymentStatus(dayCheckIn);
+                (*it).setPaymentStatus(dayCheckOut);
+                std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+                std::cout << "Payment success " << '\n';
+            }
+            else if (checkPostpaidSelection == 0)
+            {
+                
             }
         }
     }
@@ -1308,39 +1384,119 @@ void postpaid(std::list <Customer> &Customer_Database, std::list <Bill> &Revenue
     {
         std::cout << "Wrong phone " << '\n';
     }
-    else
+
+    if (checkPaymentStatus)
     {
-        Bill bill;
-        bill.setDayCheckIn(dayCheckIn);
-        bill.setDayCheckOut(dayCheckOut);
-        
-        printBill(bill);
-        
-        
-
-        int checkPostpaidSelection;
-        do
-        {
-            std::cout << "------------------------------------------------------------------------------------------ " << '\n';
-            std::cout << "Please select option by enter number: " << '\n'
-                    << "1. Make payment " << '\n'
-                    << "0. Back " << '\n';
-            std::cin >> checkPostpaidSelection;
-        } while (checkPostpaidSelection != 0 && checkPostpaidSelection != 1);
-
-        if (checkPostpaidSelection == 1)
-        {
-            Revenue_Database.push_back(bill);
-            (*customer).setPaymentStatus(dayCheckIn);
-            (*customer).setPaymentStatus(dayCheckOut);
-            std::cout << "Payment success " << '\n';
-        }
-        else if (checkPostpaidSelection == 0)
-        {
-            return;
-        }
+        std::cout << "No payment unpaid" << '\n';
     }
     
+    
+    
 
+    
+}
+
+
+void printRevenue(std::list <Bill> &Revenue_Database, Security &Admin_Account_Original)
+{
+    if (Admin_Account_Original.getAuthenticate())
+    {
+        std::list <Bill> :: iterator it;
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+        int count = 1;
+        int totalPayment = 0;
+        for (auto it : Revenue_Database)
+        {
+            std::cout << "Bill " << count << " :" << it.getPayment() << '\n';
+            totalPayment += it.getPayment();
+            ++count;
+        }
+        std::cout << "Total: " << totalPayment << '\n';
+
+    }
+     
+}
+
+void printOccupancyRate(std::vector <Floor> &Hotel_Floor, Security &Admin_Account_Original)
+{
+    if (Admin_Account_Original.getAuthenticate())
+    {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+        int countRoomAvailable = 0;
+        int countRoomUnavailable = 0;
+        int countRoomCleaning = 0;
+        for (int i = 0; i < (int)Hotel_Floor.size(); ++i)
+        {
+            for (int j = 0; j < (int) Hotel_Floor.at(i).getNumberOfRoom(); ++j)
+            {
+                if (Hotel_Floor.at(i).getRoomData().at(j).getStatus() == Available )
+                {
+                    ++countRoomAvailable;
+                }
+                else if (Hotel_Floor.at(i).getRoomData().at(j).getStatus() == Unavailable)
+                {
+                    ++countRoomUnavailable;
+                }
+                else if (Hotel_Floor.at(i).getRoomData().at(j).getStatus() == Cleaning)
+                {
+                    ++countRoomCleaning;
+                }
+            }
+        }
+        std::cout << "Hotel occupancy rate: " << ((float)(countRoomUnavailable + countRoomCleaning)*100/(float)(countRoomAvailable + countRoomCleaning + countRoomUnavailable)) << "%"<< '\n';
+    }
+    
+}
+
+
+
+
+
+
+
+
+void writeFeedback(std::list <FeedbackAndRating> &Feedback_Database)
+{
+    std::string name,phone,feedback;
+    int rating;
+    std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+    std::cout << "Enter your name: " << '\n';
+    std::cin >> name;
+    std::cout << "Enter your phone: " << '\n';
+    std::cin >> phone;
+    std::cout << "Enter your feedback: " << '\n';
+    std::getline(std::cin >> std::ws, feedback);
+
+    do
+    {
+        std::cout << "Enter your rating from 1 to 5 " << '\n';
+        std::cin >> rating;
+    } while (rating < 1 || rating > 5);
+
+    
+    std::cout << "Thank you for your feedback " << '\n';
+
+    FeedbackAndRating newFeedback(name,phone,feedback,rating);
+    Feedback_Database.push_back(newFeedback);
+    
+}
+
+
+void printListFeedback(std::list <FeedbackAndRating> Feedback_Database, Security &Admin_Account_Original)
+{
+    
+    if (Admin_Account_Original.getAuthenticate())
+    {
+        std::cout << "------------------------------------------------------------------------------------------ " << '\n';
+
+        for (auto it : Feedback_Database)
+        {
+            std::cout << "Name: " << it.getName() << '\n';
+            std::cout << "Phone: " << it.getPhone() << '\n';
+            std::cout << "Feedback: " << it.getFeedback() << '\n';
+            std::cout << "Rating: " << it.getRating() << '\n';
+            std::cout << "\n";
+        }
+    }
     
 }

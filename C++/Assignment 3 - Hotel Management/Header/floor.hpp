@@ -8,7 +8,6 @@ class Floor
 {
 private:
     std::vector <Room> NumberOfRoom;
-    int Revenue;
 public:
     Floor();
 

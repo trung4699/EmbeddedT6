@@ -3,7 +3,6 @@
 
 Floor::Floor()
 {
-    Revenue = 0;
     NumberOfRoom.resize(1);
 }
 

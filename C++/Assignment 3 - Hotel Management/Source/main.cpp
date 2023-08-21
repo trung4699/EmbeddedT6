@@ -13,6 +13,7 @@
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\floor.hpp"
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\security.hpp"
 #include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\bill.hpp"
+#include "C:\Users\Trine\Desktop\EmbeddedInterview\C++\Assignment 3 - Hotel Management\Header\feedback.hpp"
 
 
 void customerManagement(std::list <Customer> &Customer_Database, Security &Admin_Account_Original)
@@ -244,7 +245,7 @@ void roomBooking( std::vector <Floor> &Hotel_Floor, std::list <Customer> &Custom
 }
 
 
-void employeeManagement(std::list <Employee> &Employee_Database, Security &Admin_Account_Original)
+void employeeManagement(std::list <Employee> &Employee_Database, Security &Admin_Account_Original, std::list <Bill> &Revenue_Database,std::vector <Floor> &Hotel_Floor, std::list <FeedbackAndRating> Feedback_Database)
 {
     bool checkContinue = true;
     do
@@ -267,7 +268,7 @@ void employeeManagement(std::list <Employee> &Employee_Database, Security &Admin
 
         else if (checkEmployeeSelection == 2)
         {
-            adminLogIn(Employee_Database,Admin_Account_Original);
+            adminLogIn(Employee_Database,Admin_Account_Original,Revenue_Database,Hotel_Floor, Feedback_Database);
         }
         
 
@@ -322,7 +323,7 @@ void roomManagement(std::vector <Floor> &Hotel_Floor, std::list <Customer> &Cust
 
 
 
-void paymentManagement(std::list <Customer> &Customer_Database, std::list <Bill> &Revenue_Database)
+void paymentManagement(std::list <Customer> &Customer_Database, std::list <Bill> &Revenue_Database, std::vector <Floor> &Hotel_Floor)
 {
     bool checkContinue = true;
     do
@@ -340,7 +341,7 @@ void paymentManagement(std::list <Customer> &Customer_Database, std::list <Bill>
     
         if (checkPaymentSelection == 1)
         {
-            prepaid(Revenue_Database);
+            prepaid(Revenue_Database, Hotel_Floor);
         }
 
         else if (checkPaymentSelection == 2)
@@ -363,7 +364,8 @@ int main()
     std::list <Employee> Employee_Database;
     std::list <Customer> Customer_Database;
     std::list <Bill> Revenue_Database;
-    
+    std::list <FeedbackAndRating> Feedback_Database;
+
     Security admin;
 
     int numberOfFloor = 1;
@@ -396,9 +398,10 @@ int main()
                       << "4. Floor Management " << '\n'
                       << "5. Room Management " << '\n'
                       << "6. Payment " << '\n'
+                      << "7. Write feedback " << '\n'
                       << "0. Stop " << '\n';
             std::cin >> checkProgramSelection;
-        } while (checkProgramSelection != 1 && checkProgramSelection != 2 && checkProgramSelection != 3 && checkProgramSelection != 4 && checkProgramSelection != 5 && checkProgramSelection != 6 &&  checkProgramSelection != 0);
+        } while (checkProgramSelection != 1 && checkProgramSelection != 2 && checkProgramSelection != 3 && checkProgramSelection != 4 && checkProgramSelection != 5 && checkProgramSelection != 6 && checkProgramSelection != 7 && checkProgramSelection != 0);
         
         if (checkProgramSelection == 1)
         {
@@ -412,7 +415,7 @@ int main()
 
         else if (checkProgramSelection == 3)
         {
-            employeeManagement(Employee_Database, admin);
+            employeeManagement(Employee_Database, admin, Revenue_Database, Hotel_Floor, Feedback_Database);
         }
 
         else if (checkProgramSelection == 4)
@@ -428,7 +431,12 @@ int main()
 
         else if (checkProgramSelection == 6)
         {
-            paymentManagement(Customer_Database,Revenue_Database);
+            paymentManagement(Customer_Database,Revenue_Database, Hotel_Floor);
+        }
+
+        else if (checkProgramSelection == 7)
+        {
+            writeFeedback(Feedback_Database);
         }
 
         else if (checkProgramSelection == 0)
