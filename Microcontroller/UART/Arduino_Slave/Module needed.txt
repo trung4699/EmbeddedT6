@@ -1,3 +1,0 @@
-tja 1051 x2
-1 bluepil
-2 trở kéo lên cho i2c
