@@ -1,8 +1,8 @@
 /*
-  File: Slave.ino
-  Author: Linh Pham
-  Date: 22/04/2023
-  Description: Mô phỏng quá trình truyền nhận giữa Master và Slave sử dụng giao thức I2C. File này dành cho Slave
+  File: Arduino_Slave.ino
+  Author: Phan Hoang Trung
+  Date: 05/09/2023
+  Description: Coding bit - bangging I2C protocol. This file is for an arduino as a slave
 */
 
 //Bus I2C
@@ -11,7 +11,7 @@
 //Bit Write/Read
 #define WRITE 0
 #define READ 1
-//Adress
+//Address
 #define ADDRESS 0x6E
 
 uint8_t dataReceive = 0x00;  //Data receive from Master
@@ -23,19 +23,18 @@ uint8_t readOrWrite;//Lưu chế độ
 
 uint8_t dataSend = 0x00; //Data send to Master
 uint8_t sizeDataSend = 0;//Size of data send to master
-uint8_t data_value = 20;
+uint8_t data_value = 21;
 
-bool checkStart = false;//Biến kiểm tra Start
-bool checkStop = true;
-bool checkAddress = false;//Biến kiểm tra địa chỉ
-//bool checkData = 1;////Biến kiểm tra để bắt đầu đọc DATA
+bool checkStart = false;//Variable check start status
+bool checkStop = true;  //Variable check stop status
+bool checkAddress = false;  //Variable check address status
 
-unsigned long start_time ;
-unsigned long present_time;
+
+unsigned long start_time ; // This variable is used for replace delay function incase delay doesn't work
 
 /*
   Function: i2cInit
-  Description: Hàm khởi động giao thức I2C
+  Description: Initialize i2c protocol
   Input:
     No input
   Output:
@@ -47,6 +46,15 @@ void i2cInit()
   pinMode(SCL, INPUT);
 }
 
+
+/*
+  Function: delayUsingMillis
+  Description: using this function incase delay doesn't work
+  Input:
+    No input
+  Output:
+    No return
+*/
 void delayUsingMillis(unsigned long timeDelay)
 {
   start_time = millis();
@@ -60,8 +68,8 @@ void delayUsingMillis(unsigned long timeDelay)
 }
 
 /*
-  Function: checkStop
-  Description: Hàm kiểm tra tín hiệu kết thúc
+  Function: checkStopCondition
+  Description: check stop condition 
   Input:
     No input
   Output:
@@ -71,7 +79,7 @@ void delayUsingMillis(unsigned long timeDelay)
       
 volatile void checkStopCondition()
 {
-  delay(100);
+  delay(30);
   if (digitalRead(SCL) == HIGH && digitalRead(SDA) == LOW) 
   {
       delay(30);
@@ -85,10 +93,14 @@ volatile void checkStopCondition()
         frameAddress = 0x00;
         sizeFrameAddress = 0;
       }
+      else
+      {
+        Serial.println("Stop second condition not true");
+      }
    }
    else
    {
-     Serial.println("Stop condition not true");
+     Serial.println("Stop first condition not true");
    }
    
   
@@ -97,7 +109,7 @@ volatile void checkStopCondition()
 
 /*
   Function: writeData
-  Description: Hàm gửi Data tới Master
+  Description: send data in slave to master
   Input:
     No input
   Output:
@@ -123,12 +135,11 @@ volatile void writeData() {
     dataSend = dataSend << 1;
     ++sizeDataSend;
   }
-  pinMode(SDA, INPUT);
 }
 
 /*
   Function: readData
-  Description: Hàm đọc Data từ Master
+  Description: read data receive from master
   Input:
     No input
   Output:
@@ -145,6 +156,15 @@ volatile void readData() {
     }
 }
 
+
+/*
+  Function: checkStartCondition
+  Description: check start condition 
+  Input:
+    No input
+  Output:
+    No return
+*/
 volatile void checkStartCondition()
 {
   if (digitalRead(SDA) == LOW)
@@ -158,7 +178,7 @@ volatile void checkStartCondition()
 
 /*
   Function: interruptSCL
-  Description: Chương trình ngắt mỗi khi có xung Clock
+  Description: This function will run when has a change voltage in SCL pin
   Input:
     No input
   Output:
@@ -166,12 +186,14 @@ volatile void checkStartCondition()
 */
 
 volatile void interruptSCL() {
-  //Check tín hiệu bắt đầu I2C
+  //Check start condition
   if (checkStart == false && checkStop == true)
   {
     checkStartCondition();
     return;
   }
+
+  // If address receive from master
   if (checkStart == true && checkAddress == false)
   {
     if ( sizeFrameAddress < 8)
@@ -179,12 +201,13 @@ volatile void interruptSCL() {
       
       frameAddress = frameAddress << 1;
       frameAddress = frameAddress | digitalRead(SDA);
+      
       ++sizeFrameAddress;
       return;
     }
   }
   
-  //Truyền nhận Data nếu địa chỉ đúng
+  //Check stop condition, then check mode read/write
   if (checkStart == true && checkAddress == true)
   {
       if (checkStop == false)
@@ -208,12 +231,15 @@ void setup() {
   Serial.begin(9600);
   i2cInit();
   dataSend = data_value;
-  attachInterrupt(1, interruptSCL, FALLING);
+  attachInterrupt(1, interruptSCL, FALLING); // run interrupt function when has a change voltage from HIGH to LOW
   
 }
 
 void loop(){
-  
+
+  // if receive enough 8 bit frame address, compare 7 bit address with address of this slave.
+  // if true, return an ACK signal, determine mode.
+  // else do nothing
   if (sizeFrameAddress == 8)
   {
       Serial.print("Frame address from master: ");
@@ -222,7 +248,7 @@ void loop(){
       {
         pinMode(SDA, OUTPUT);
         digitalWrite(SDA, LOW);
-        delay(50);
+        delay(60);
         pinMode(SDA, INPUT);
         checkAddress = true;
         
@@ -242,45 +268,52 @@ void loop(){
       }
   }
 
-
+  // if receive enough 8 bit data, then return an ACK signal
+  // then check stop condition
+  // if stop, then stop
+  // else, keep on receiving data
   if (sizeDataReceive == 8)
   {
       pinMode(SDA, OUTPUT);
       digitalWrite(SDA, LOW);
-      delay(50);
+      delay(60);
       pinMode(SDA, INPUT);
       Serial.print("Data reiceive: ");
       Serial.println((int)dataReceive);
       sizeDataReceive = 0;
       dataReceive = 0;
 
-      
+      delay(30);
       checkStopCondition();
 
   }
   
   if (sizeDataSend == 8)
   {
-    pinMode(SDA, OUTPUT);
-    digitalWrite(SDA, LOW);
-    delay(70);
+    delay(60);
     pinMode(SDA, INPUT);
-    Serial.print("Data send: ");
-    Serial.println(data_value);
     
-    
-    
-    if (data_value >= 44)
+    if (digitalRead(SDA) == LOW)
     {
-      data_value = 19;
+      Serial.print("Data send success: ");
+      Serial.println(data_value);
+      if (data_value >= 44)
+      {
+        data_value = 19;
+      }
+      
+      ++data_value;
+      dataSend = data_value;
     }
-    ++data_value;
-
-    dataSend = data_value;
+    else
+    {
+       Serial.print("Data send fail: ");
+    }
+    
     sizeDataSend = 0;
     
     //Checkstop
-    
+    delay(30);
     checkStopCondition();
 
   }
