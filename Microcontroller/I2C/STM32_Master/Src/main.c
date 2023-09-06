@@ -55,6 +55,7 @@
 
 /* USER CODE BEGIN PV */
 uint8_t dataReceiveFromSlave;
+uint8_t sizeDataReceiveFromSlave;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,7 +122,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
 		
-		HAL_Delay(5000);
+		HAL_Delay(3000);
 		bool checkSendAddress;
 		do
 		{
@@ -140,11 +141,11 @@ int main(void)
 				} while (checkSendData == NACK);
 				
 			}
-			HAL_Delay(2);
+			
 			i2cStop();
 		}
 		
-		HAL_Delay(5000);
+		HAL_Delay(3000);
 		do
 		{
 			checkSendAddress = beginTrans(addressSlave,MODE_READ);
@@ -154,7 +155,7 @@ int main(void)
 		{
 			HAL_Delay(2000);
 			dataReceiveFromSlave = readData();
-			HAL_Delay(2);
+			
 			i2cStop();
 		}
 		
@@ -265,12 +266,14 @@ void i2cStart()
 
 void i2cStop()
 {
-	SET_SDA_LOW;
 	
-	HAL_Delay(10);
-	SET_SCL_HIGH;
-	HAL_Delay(20);
+	
+	SET_SDA_LOW;
+	HAL_Delay(30);
+	
+	
 	SET_SDA_HIGH;
+	HAL_Delay(30);
 	
 	
 }
@@ -315,7 +318,7 @@ bool checkAck()
 bool sendData(uint8_t data)
 {
 	//data: 0xQWERTYUI
-	
+	HAL_Delay(20);
 	uint8_t i = 0, x = 0;
 	for (i = 0; i < 8; ++i)
 	{
@@ -347,22 +350,36 @@ bool sendData(uint8_t data)
 
 uint8_t readData()
 {
-	uint8_t i = 0, data = 0;
+	uint8_t i = 0, sizeData = 0;
+	uint8_t data = 0x00;
 	changeSDAModeToInput();
+	HAL_Delay(20);
 	// our data is 0x00000000
 	for (i = 0; i < 8; ++i)
 	{
+		
 		clockSignal(); // activate an interrupt in the slave 
-		//HAL_Delay(10); // then wait for the slave to make a change SDA line base on bit data
+		HAL_Delay(10); // then wait for the slave to make a change SDA line base on bit data
+		data = data << 1;
 		data = data | READ_SDA; // now we use bitwise operation OR to take first bit data of the slave
 														// for example, if first bit data of the slave is 1, now our data is 0x00000001
-		data = data << 1; // now we move to second bit, which mean now our data is 0x00000010
+											// now we move to second bit, which mean now our data is 0x00000010
 											// then keep moving on until we take all 8 bit data from slave
+		++sizeData;
 	}
-	
+
 	changeSDAModeToOutput();
+	if (sizeData == 8)
+	{
+		SET_SDA_LOW;
+		HAL_Delay(60);
+	}
+	else
+	{
+		SET_SDA_HIGH;
+		HAL_Delay(60);
+	}
 	resetSCLAndSDA();
-	HAL_Delay(60);
 	return data;
 }
 
