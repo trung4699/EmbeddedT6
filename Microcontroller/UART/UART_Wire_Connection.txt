@@ -1,0 +1,7 @@
+STM32_Master:
+A6 - Rx - Input
+A7 - Tx - Output
+
+Arduino_Slave:
+Pin 7 - Rx - Input
+Pin 6 - Tx - Output
