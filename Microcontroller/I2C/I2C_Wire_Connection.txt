@@ -1,0 +1,7 @@
+STM32 Master:
+A7 - SDA
+A6 - SCL
+
+Arduino Slave:
+SDA - 4
+SCL - 3
